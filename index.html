@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cultur'O'Guides</title>
+    
+    <meta name="description" content="Cultur'O'Guides est une application de jeu quiz conçue pour la communauté Google Local Guides, afin de célébrer la Francophonie à travers des questions de culture, pays, lieux d'exception et expressions.">
+    <meta name="keywords" content="CulturOGuides, Local Guides, Francophonie, quiz, Google Local Guides, culture, géographie">
+    <meta property="og:title" content="Cultur'O'Guides">
+    <meta property="og:description" content="Une app de quiz pour la communauté Google Local Guides, pensée pour célébrer la Francophonie avec des défis culturels et géographiques.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Cultur'O'Guides">
+    <meta property="og:image" content="assets/logo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cultur'O'Guides">
+    <meta name="twitter:description" content="Application de quiz conçue pour les Google Local Guides, afin de célébrer la Francophonie en jouant.">
+    <meta name="twitter:image" content="assets/logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo.png">
+    <link rel="apple-touch-icon" href="assets/logo.png">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Hanalei&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (pour le responsive rapide) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Librairies externes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Ajout de Lucide Icons pour des icônes claires et professionnelles -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        glg: {
+                            yellow: '#F4B400',
+                            blue: '#4285F4',
+                            red: '#DB4437',
+                            green: '#0F9D58',
+                        },
+                        wood: {
+                            light: '#e6a87c',
+                            base: '#c87f4c',
+                            dark: '#8a4f2b',
+                            border: '#5c3115',
+                            bg: '#f4d5b6'
+                        }
+                    },
+                    fontFamily: {
+                        title: ['Hanalei', 'cursive'],
+                        body: ['Fredoka', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+        <link rel="stylesheet" href="src/style.css">
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col items-center justify-center">
+
+    <!-- LECTEUR AUDIO BACKGROUND -->
+    <!-- Remplace l'URL dans 'src' par ta propre musique MP3 si tu en as une spécifique -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="https://assets.mixkit.co/music/preview/mixkit-chill-bro-894.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- APP CONTAINER -->
+    <!-- Augmentation de la largeur max sur grands écrans (max-w-5xl) pour que les 8 drapeaux respirent -->
+    <div id="app" class="relative w-full max-w-md md:max-w-3xl lg:max-w-5xl h-full sm:h-[95vh] sm:rounded-3xl sm:border-8 border-wood-dark shadow-2xl bg-wood-bg overflow-hidden flex flex-col mx-auto">
+        
+        <!-- ================= ECRAN 1 : LOGIN ================= -->
+        <div id="view-login" class="flex-1 flex flex-col px-2 py-4 md:p-6 lg:p-8 overflow-y-auto fade-in h-full">
+            <div class="text-center mt-2 mb-4">
+                <img src="assets/logo.png" alt="Logo Cultur'O'Guides" class="app-logo app-logo-lg mx-auto mb-2">
+                <h1 class="text-5xl title-text text-glg-yellow">Cultur'O'<br>Guides</h1>
+                <p class="text-wood-dark font-bold mt-2 text-lg">Célébrons la Francophonie !</p>
+            </div>
+
+            <!-- Espace VERT augmenté drastiquement avec px-14 et px-20 sur grands écrans -->
+            <div class="wood-panel px-6 md:px-14 lg:px-20 py-8 mt-2 flex-1 flex flex-col items-center">
+                <label class="block text-center font-bold mb-3 text-xl w-full">Ton Pseudo Connect</label>
+                <input type="text" id="input-username" class="input-wood w-full max-w-md p-3 text-center text-lg font-bold mb-8" placeholder="connectPseudo">
+
+                <label class="block text-center font-bold mb-3 text-xl w-full">Ton Pays</label>
+                <div id="country-grid" class="flex flex-wrap justify-center content-start gap-2 md:gap-3 lg:gap-4 mb-4 flex-1 w-full overflow-y-auto px-1">
+                    <!-- Généré en JS -->
+                </div>
+
+                <!-- Message d'erreur visuel et esthétique au lieu du popup natif -->
+                <div id="login-error" class="hidden text-red-700 font-bold text-center bg-red-100 border-2 border-red-500 p-2 rounded-lg mb-4 text-sm shadow-inner max-w-md w-full"></div>
+
+                <button id="btn-login" onclick="app.login()" class="wood-btn wood-btn-green w-full max-w-md py-4 text-xl mt-auto shrink-0 transition-all">JOUER</button>
+            </div>
+        </div>
+
+        <!-- ================= ECRAN 2 : DASHBOARD ================= -->
+        <div id="view-dashboard" class="hidden flex-1 flex flex-col px-2 py-4 sm:p-4 fade-in h-full bg-wood-bg">
+            <!-- AppBar -->
+            <div class="flex justify-between items-center bg-wood-dark text-white p-3 rounded-2xl shadow-md border-2 border-wood-border mb-4">
+                <div class="flex items-center gap-2">
+                    <img src="assets/logo.png" alt="Logo Cultur'O'Guides" class="app-logo app-logo-sm">
+                    <h2 class="title-text text-2xl md:text-3xl m-0 leading-none" style="text-shadow: 1px 1px 0px #000;">
+                        <span class="md:hidden">C'O'G</span>
+                        <span class="hidden md:inline">Cultur'O'Guides</span>
+                    </h2>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="text-right flex flex-col items-end">
+                        <p id="dash-username" class="font-bold text-sm leading-tight">User</p>
+                        <div class="flex items-center gap-1">
+                            <img id="dash-flag" src="" alt="flag" class="w-4 h-3 rounded-sm shadow-sm hidden">
+                            <p id="dash-country" class="text-xs text-glg-yellow">Pays</p>
+                        </div>
+                    </div>
+                    <img id="dash-avatar" src="" alt="Avatar" class="w-10 h-10 rounded-full border-2 border-white bg-white">
+                </div>
+            </div>
+
+            <div class="text-center mb-4">
+                <h3 class="text-2xl font-bold text-wood-dark">Choisis une catégorie</h3>
+                <p class="text-sm text-wood-border font-semibold">1m 30s • 10 questions</p>
+            </div>
+
+            <!-- Catégories -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 flex-1 content-center w-full max-w-4xl mx-auto pb-4">
+                <button onclick="app.startGame('culture')" class="wood-panel aspect-square p-2 sm:p-4 flex flex-col items-center justify-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-glg-blue active:scale-95 shadow-lg border-b-8 border-b-wood-border cursor-pointer group">
+                    <span class="text-4xl sm:text-5xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">🎵</span>
+                    <span class="font-bold text-center leading-tight text-xs sm:text-sm md:text-base group-hover:text-glg-blue transition-colors">Culture &<br>Talents</span>
+                    <div class="mt-2 sm:mt-3 w-[60%] sm:w-full h-1.5 sm:h-2 bg-glg-blue rounded-full"></div>
+                </button>
+                <button onclick="app.startGame('pays')" class="wood-panel aspect-square p-2 sm:p-4 flex flex-col items-center justify-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-glg-red active:scale-95 shadow-lg border-b-8 border-b-wood-border cursor-pointer group">
+                    <span class="text-4xl sm:text-5xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">🌍</span>
+                    <span class="font-bold text-center leading-tight text-xs sm:text-sm md:text-base group-hover:text-glg-red transition-colors">Pays &<br>Capitales</span>
+                    <div class="mt-2 sm:mt-3 w-[60%] sm:w-full h-1.5 sm:h-2 bg-glg-red rounded-full"></div>
+                </button>
+                <button onclick="app.startGame('lieux')" class="wood-panel aspect-square p-2 sm:p-4 flex flex-col items-center justify-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-glg-yellow active:scale-95 shadow-lg border-b-8 border-b-wood-border cursor-pointer group">
+                    <span class="text-4xl sm:text-5xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">🏛️</span>
+                    <span class="font-bold text-center leading-tight text-xs sm:text-sm md:text-base group-hover:text-glg-yellow transition-colors">Lieux<br>d'exception</span>
+                    <div class="mt-2 sm:mt-3 w-[60%] sm:w-full h-1.5 sm:h-2 bg-glg-yellow rounded-full"></div>
+                </button>
+                <button onclick="app.startGame('mots')" class="wood-panel aspect-square p-2 sm:p-4 flex flex-col items-center justify-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-glg-green active:scale-95 shadow-lg border-b-8 border-b-wood-border cursor-pointer group">
+                    <span class="text-4xl sm:text-5xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">🗣️</span>
+                    <span class="font-bold text-center leading-tight text-xs sm:text-sm md:text-base group-hover:text-glg-green transition-colors">Mots &<br>Objets</span>
+                    <div class="mt-2 sm:mt-3 w-[60%] sm:w-full h-1.5 sm:h-2 bg-glg-green rounded-full"></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= ECRAN 3 : JEU ================= -->
+        <div id="view-game" class="hidden flex-1 flex flex-col px-2 py-4 sm:p-4 fade-in bg-wood-bg">
+            <!-- Header Jeu -->
+            <div class="flex justify-between items-center mb-4 max-w-3xl mx-auto w-full">
+                <div class="wood-panel px-4 py-2 text-center border-2 border-wood-border">
+                    <span class="text-xs uppercase block text-glg-yellow font-bold">Score</span>
+                    <span id="game-score" class="text-2xl font-bold">0</span>/10
+                </div>
+                <div class="wood-panel px-4 py-2 text-center border-2 border-wood-border flex-1 ml-4">
+                    <span class="text-xs uppercase block text-white font-bold mb-1">Temps Restant</span>
+                    <div class="w-full bg-wood-border rounded-full h-4 relative overflow-hidden">
+                        <div id="timer-bar" class="bg-glg-red h-full transition-all duration-1000" style="width: 100%;"></div>
+                        <span id="timer-text" class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white z-10">01:30</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Area -->
+            <div class="wood-panel flex-1 flex flex-col p-4 mb-4 justify-center items-center text-center shadow-lg w-full max-w-3xl mx-auto">
+                <span id="q-counter" class="text-glg-yellow font-bold mb-2">Question 1/10</span>
+                <h3 id="question-text" class="text-xl sm:text-3xl font-bold leading-snug">La question s'affiche ici ?</h3>
+            </div>
+
+            <!-- Answers Area -->
+            <div id="answers-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-2 w-full max-w-3xl mx-auto">
+                <!-- Boutons générés en JS -->
+            </div>
+        </div>
+
+        <!-- ================= ECRAN 4 : RÉSULTAT (CARTE À PARTAGER) ================= -->
+        <div id="view-result" class="hidden flex-1 flex flex-col items-center justify-center px-2 py-4 sm:p-4 overflow-y-auto fade-in bg-wood-bg relative">
+            <h2 class="title-text text-3xl text-center text-wood-dark mb-4">Fin de la session !</h2>
+            
+            <!-- Carte résultat — largeur fixe 520×390px, scaling visuel mobile géré par JS -->
+            <div class="card-scale-wrapper">
+            <div id="shareable-card" class="wood-panel flex flex-col items-center justify-between text-center shadow-2xl relative overflow-hidden" style="font-family: 'Fredoka', sans-serif; width: 520px; height: 390px; padding: 16px;">
+                <!-- Décoration -->
+                <div class="absolute -top-10 -left-10 w-32 h-32 bg-glg-yellow rounded-full opacity-20 pointer-events-none"></div>
+                <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-glg-green rounded-full opacity-20 pointer-events-none"></div>
+
+                <!-- Logo -->
+                <img src="assets/logo.png" alt="Logo Cultur'O'Guides" class="app-logo app-logo-md z-10" style="margin-top: 4px;">
+
+                <!-- Citation -->
+                <p class="font-bold leading-snug z-10 italic px-4 text-white" style="font-size: 13px; margin-top: 6px;">
+                    "Hey, voici mon score réussi au jeu <span class="text-glg-yellow font-black">Cultur'O'Guides</span> lors de la session Let's Celebrate Francophonie !"
+                </p>
+
+                <!-- Corps : 2 colonnes fixes -->
+                <div class="grid grid-cols-2 items-center w-full z-10" style="gap: 20px; padding: 0 24px; margin: auto 0;">
+
+                    <!-- Colonne 1 : Info Joueur -->
+                    <div class="flex flex-col items-center justify-center w-full">
+                        <img id="res-avatar" src="" class="bg-white rounded-full border-4 border-wood-border shadow-md object-cover block" style="width: 72px; height: 72px; margin-bottom: 8px;" crossorigin="anonymous">
+                        <p id="res-username" class="font-bold text-white text-center" style="font-size: 15px; line-height: 1.2; margin-bottom: 8px; word-break: break-word;">User</p>
+                        <div class="flex flex-row flex-nowrap items-center justify-center bg-white rounded-full shadow-sm w-max mx-auto" style="gap: 6px; padding: 4px 12px;">
+                            <img id="res-flag" src="" alt="flag" class="object-cover rounded-sm block" style="width: 16px; height: 12px;" crossorigin="anonymous">
+                            <p id="res-country" class="font-bold text-glg-blue uppercase whitespace-nowrap" style="font-size: 10px; letter-spacing: 0.05em; margin: 0; line-height: 1;">Pays</p>
+                        </div>
+                    </div>
+
+                    <!-- Colonne 2 : Score -->
+                    <div class="flex items-center justify-center w-full">
+                        <div class="bg-wood-dark border-4 border-wood-border rounded-xl flex flex-col items-center justify-center mx-auto" style="width: 155px; height: 108px; box-shadow: inset 0 4px 8px rgba(0,0,0,0.4);">
+                            <p class="text-wood-bg uppercase font-bold" style="font-size: 11px; letter-spacing: 0.12em; margin: 0 0 8px 0; line-height: 1;">Score</p>
+                            <p id="res-score" class="font-black text-glg-yellow leading-none whitespace-nowrap" style="font-size: 46px; margin: 0; text-shadow: 2px 2px 0px #5c3115;">0/10</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer -->
+                <div class="w-full z-10" style="padding-bottom: 8px;">
+                    <p class="font-normal text-white/80 tracking-wide" style="font-size: 11px; margin: 0; line-height: 1;">Jeu développé par @glosings0n</p>
+                </div>
+            </div>
+            </div><!-- end card-scale-wrapper -->
+
+            <!-- Actions (Lucide Icons en row comme la Bottom Nav) -->
+            <div class="mt-6 flex flex-row justify-center items-center gap-6">
+                <!-- Bouton Télécharger -->
+                <button onclick="app.downloadCard()" class="w-14 h-14 flex items-center justify-center wood-btn rounded-full pb-2 hover:bg-wood-base group" title="Télécharger la carte">
+                    <i data-lucide="download" class="w-6 h-6 text-wood-border group-hover:scale-110 transition-transform"></i>
+                </button>
+                
+                <!-- Bouton Partager sur Connect (Mise en évidence) -->
+                <a href="https://www.localguidesconnect.com/t/virtual-march-14-lets-celebrate-francophonie/510396" target="_blank" class="w-16 h-16 -mt-4 flex items-center justify-center wood-btn wood-btn-blue rounded-full border-4 border-wood-border shadow-lg z-20 pb-2 hover:scale-105 group" title="Partager sur Connect">
+                    <i data-lucide="globe" class="w-8 h-8 text-white group-hover:scale-110 transition-transform"></i>
+                </a>
+
+                <!-- Bouton Retour à l'accueil -->
+                <button onclick="app.showDashboard()" class="w-14 h-14 flex items-center justify-center wood-btn rounded-full pb-2 hover:bg-wood-base group" title="Retour à l'accueil">
+                    <i data-lucide="home" class="w-6 h-6 text-wood-border group-hover:scale-110 transition-transform"></i>
+                </button>
+            </div>
+            
+            <!-- Indicateur discret de synchronisation en arrière-plan -->
+            <div id="submit-loader" class="hidden absolute top-4 right-4 flex items-center gap-2 bg-white/50 px-3 py-1.5 rounded-full text-[10px] font-bold text-wood-dark shadow-sm border border-wood-border/30">
+                <div class="w-3 h-3 border-2 border-wood-dark border-t-transparent rounded-full animate-spin"></div>
+                Sync...
+            </div>
+        </div>
+
+        <!-- ================= NAVIGATION BASSE ================= -->
+        <div id="bottom-nav" class="hidden h-16 bg-wood-dark border-t-4 border-wood-border flex justify-around items-center px-4 sm:border-b-4">
+            <button onclick="app.toggleAudio()" class="w-12 h-12 flex items-center justify-center wood-btn rounded-full pb-2 hover:bg-wood-base group">
+                <i id="icon-audio-on" data-lucide="volume-2" class="w-6 h-6 text-wood-border group-hover:scale-110 transition-transform"></i>
+                <i id="icon-audio-off" data-lucide="volume-x" class="w-6 h-6 text-wood-border hidden group-hover:scale-110 transition-transform"></i>
+            </button>
+            <button onclick="app.showLeaderboard()" class="w-16 h-16 -mt-6 flex items-center justify-center wood-btn wood-btn-primary rounded-full border-4 border-wood-border shadow-lg z-20 pb-2 hover:scale-105 group">
+                <i data-lucide="trophy" class="w-8 h-8 text-wood-border fill-current group-hover:scale-110 transition-transform"></i>
+            </button>
+            <button onclick="app.showRules()" class="w-12 h-12 flex items-center justify-center wood-btn rounded-full pb-2 hover:bg-wood-base group">
+                <i data-lucide="circle-help" class="w-6 h-6 text-wood-border group-hover:scale-110 transition-transform"></i>
+            </button>
+        </div>
+
+        <!-- ================= MODAL LEADERBOARD ================= -->
+        <div id="modal-leaderboard" class="hidden absolute inset-0 modal-overlay z-50 flex flex-col justify-end items-center">
+            <div class="wood-panel bg-wood-bg h-[80%] w-full max-w-3xl rounded-t-3xl border-b-0 flex flex-col slide-up p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="title-text text-2xl text-glg-yellow">Leaderboard</h2>
+                    <div class="flex items-center gap-2">
+                        <!-- Bouton télécharger la carte, visible uniquement si l'utilisateur est connecté -->
+                        <button id="lb-download-btn" onclick="app.downloadCardFromLeaderboard()" title="Télécharger ma carte de score" style="display:none;" class="wood-btn bg-glg-blue w-8 h-8 rounded-full flex items-center justify-center text-white hover:scale-105 transition-transform">
+                            <i data-lucide="download" class="w-4 h-4 pointer-events-none"></i>
+                        </button>
+                        <button onclick="app.closeModals()" class="wood-btn bg-wood-light w-8 h-8 rounded-full flex items-center justify-center pb-1 font-bold text-red-700">X</button>
+                    </div>
+                </div>
+                
+                <!-- Loading state -->
+                <div id="lb-loader" class="flex-1 flex flex-col items-center justify-center">
+                    <div class="loader"></div>
+                    <p class="mt-2 font-bold">Chargement des champions...</p>
+                </div>
+
+                <!-- List -->
+                <div id="lb-list" class="hidden flex-1 overflow-y-auto pr-2 pb-10">
+                    <!-- Contenu inséré via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL RÈGLES ================= -->
+        <div id="modal-rules" class="hidden absolute inset-0 modal-overlay z-50 flex items-center justify-center p-4">
+            <div class="wood-panel p-6 text-center max-w-sm w-full slide-up">
+                <h2 class="title-text text-2xl text-glg-yellow mb-4">Règles du Jeu</h2>
+                <ul class="text-left text-sm space-y-3 font-semibold mb-6">
+                    <li>⏱️ Vous avez <strong>1 min 30 sec</strong> pour répondre à 10 questions.</li>
+                    <li>🎯 1 seule bonne réponse par question.</li>
+                    <li>🔄 Vous pouvez rejouer, mais votre <strong>nouveau score écrasera l'ancien</strong> sur le classement mondial.</li>
+                    <li>🏆 Partagez votre carte à la fin sur Local Guides Connect !</li>
+                </ul>
+                <button onclick="app.closeModals()" class="wood-btn wood-btn-red w-full py-2">Fermer</button>
+            </div>
+        </div>
+
+        <!-- ================= MODAL WELCOME BACK (SESSION) ================= -->
+        <div id="modal-welcome-back" class="hidden absolute inset-0 modal-overlay z-[60] flex items-center justify-center p-4 backdrop-blur-md">
+            <div class="wood-panel p-6 text-center max-w-sm w-full slide-up flex flex-col items-center shadow-2xl">
+                <h2 class="title-text text-2xl text-glg-yellow mb-4">Content de te revoir !</h2>
+                <img id="wb-avatar" src="" class="w-24 h-24 bg-white rounded-full border-4 border-wood-border mb-3 shadow-md">
+                <p id="wb-username" class="font-bold text-2xl mb-1 text-white">@User</p>
+                <div class="flex items-center gap-2 mb-6">
+                    <img id="wb-flag" src="" alt="flag" class="w-6 h-auto rounded-sm shadow-sm">
+                    <p id="wb-country" class="text-sm font-bold text-glg-blue bg-white/90 px-2 py-0.5 rounded-md">Pays</p>
+                </div>
+                
+                <div class="flex flex-col gap-3 w-full">
+                    <button onclick="app.continueSession()" class="wood-btn wood-btn-green w-full py-3 text-lg">Continuer</button>
+                    <button onclick="app.clearSession()" class="wood-btn wood-btn-red w-full py-2 text-sm">Ce n'est pas moi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL ACCOUNT FOUND (DOUBLON) ================= -->
+        <div id="modal-account-found" class="hidden absolute inset-0 modal-overlay z-[60] flex items-center justify-center p-4 backdrop-blur-md">
+            <div class="wood-panel p-6 text-center max-w-sm w-full slide-up flex flex-col items-center shadow-2xl">
+                <h2 class="title-text text-xl text-glg-yellow mb-3">Pseudo existant</h2>
+                <p class="text-sm font-bold mb-4">Le pseudo "<span id="af-username-text" class="text-wood-border text-lg bg-white/30 px-1.5 rounded-md"></span>" est retrouvé dans la BD. Est-il le vôtre ?</p>
+                <img id="af-avatar" src="" class="w-20 h-20 bg-white rounded-full border-4 border-wood-border mb-2 shadow-md">
+                <div class="flex items-center gap-2 mb-6">
+                    <img id="af-flag" src="" alt="flag" class="w-6 h-auto rounded-sm shadow-sm">
+                    <p id="af-country" class="text-xs font-bold text-glg-blue bg-white/90 px-2 py-0.5 rounded-md">Pays</p>
+                </div>
+                
+                <div class="flex flex-col gap-3 w-full">
+                    <button onclick="app.confirmAccountFound()" class="wood-btn wood-btn-green w-full py-3 text-lg">Oui, continuer</button>
+                    <button onclick="app.cancelAccountFound()" class="wood-btn wood-btn-red w-full py-2 text-sm">Non, modifier</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= MODAL LIMIT REACHED (2 ATTEMPTS) ================= -->
+        <div id="modal-limit" class="hidden absolute inset-0 modal-overlay z-[70] flex items-center justify-center p-4 backdrop-blur-md">
+            <div class="wood-panel p-6 text-center max-w-sm w-full slide-up flex flex-col items-center shadow-2xl">
+                <h2 class="title-text text-3xl text-glg-red mb-2">Limite Atteinte</h2>
+                <i data-lucide="timer-off" class="w-16 h-16 text-wood-dark mb-4 animate-pulse"></i>
+                <p class="text-sm font-bold mb-6 text-wood-dark bg-white/50 p-3 rounded-lg border border-wood-border/20">
+                    Vous avez déjà atteint la limite de <span class="text-glg-red text-lg">2 tentatives</span> autorisées.
+                    <br><br>Veuillez revenir dans 1 heure pour retenter votre chance !
+                </p>
+                <button onclick="document.getElementById('modal-limit').classList.add('hidden')" class="wood-btn wood-btn-primary w-full py-3 text-lg">J'ai compris</button>
+            </div>
+        </div>
+
+        <!-- Footer global -->
+        <div id="global-footer" class="w-full text-center pb-4 pt-3 mt-auto shrink-0 relative z-10 bg-wood-bg">
+            <img src="assets/logo.png" alt="Logo Cultur'O'Guides" class="app-logo app-logo-xs mx-auto mb-1">
+            <p class="text-[12px] text-wood-dark font-bold opacity-90">
+                Jeu développé par <a href="https://linktr.ee/glosings0n" target="_blank" rel="noopener noreferrer" class="underline hover:text-glg-blue transition-colors cursor-pointer pointer-events-auto">@glosings0n</a>
+            </p>
+        </div>
+
+    </div>
+
+    <script src="src/script.js" defer></script>
+</body>
+</html>
