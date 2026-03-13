@@ -5,22 +5,22 @@
 	<p><strong>Le jeu interactif ultime pour célébrer la Francophonie chez les Google Local Guides.</strong></p>
 
 	<p>
-		<img src="https://flagcdn.com/w40/dz.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Algérie" title="Algérie" />
-		<img src="https://flagcdn.com/w40/bj.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Bénin" title="Bénin" />
-		<img src="https://flagcdn.com/w40/br.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Brésil" title="Brésil" />
-		<img src="https://flagcdn.com/w40/bf.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Burkina Faso" title="Burkina Faso" />
-		<img src="https://flagcdn.com/w40/bi.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Burundi" title="Burundi" />
-		<img src="https://flagcdn.com/w40/ca.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Canada" title="Canada" />
-		<img src="https://flagcdn.com/w40/ci.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Côte d'Ivoire" title="Côte d'Ivoire" />
-		<img src="https://flagcdn.com/w40/fr.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="France" title="France" />
-		<img src="https://flagcdn.com/w40/gn.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Guinée" title="Guinée" />
-		<img src="https://flagcdn.com/w40/in.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Inde" title="Inde" />
-		<img src="https://flagcdn.com/w40/ma.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Maroc" title="Maroc" />
-		<img src="https://flagcdn.com/w40/mx.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Mexique" title="Mexique" />
-		<img src="https://flagcdn.com/w40/ng.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Nigeria" title="Nigeria" />
-		<img src="https://flagcdn.com/w40/cd.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="RDC" title="RDC" />
-		<img src="https://flagcdn.com/w40/ch.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Suisse" title="Suisse" />
-		<img src="https://flagcdn.com/w40/tg.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Togo" title="Togo" />
+		<kbd><img title="Algérie" alt="Algérie" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/dz.svg" width="22"></kbd>
+		<kbd><img title="Bénin" alt="Bénin" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/bj.svg" width="22"></kbd>
+		<kbd><img title="Brésil" alt="Brésil" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/br.svg" width="22"></kbd>
+		<kbd><img title="Burkina Faso" alt="Burkina Faso" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/bf.svg" width="22"></kbd>
+		<kbd><img title="Burundi" alt="Burundi" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/bi.svg" width="22"></kbd>
+		<kbd><img title="Canada" alt="Canada" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/ca.svg" width="22"></kbd>
+		<kbd><img title="Côte d'Ivoire" alt="Côte d'Ivoire" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/ci.svg" width="22"></kbd>
+		<kbd><img title="France" alt="France" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/fr.svg" width="22"></kbd>
+		<kbd><img title="Guinée" alt="Guinée" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/gn.svg" width="22"></kbd>
+		<kbd><img title="Inde" alt="Inde" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/in.svg" width="22"></kbd>
+		<kbd><img title="Maroc" alt="Maroc" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/ma.svg" width="22"></kbd>
+		<kbd><img title="Mexique" alt="Mexique" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/mx.svg" width="22"></kbd>
+		<kbd><img title="Nigeria" alt="Nigeria" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/ng.svg" width="22"></kbd>
+		<kbd><img title="RDC" alt="RDC" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/cd.svg" width="22"></kbd>
+		<kbd><img title="Suisse" alt="Suisse" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/ch.svg" width="22"></kbd>
+		<kbd><img title="Togo" alt="Togo" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/tg.svg" width="22"></kbd>
 	</p>
 </div>
 
