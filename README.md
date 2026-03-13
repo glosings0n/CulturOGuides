@@ -1,28 +1,10 @@
-<div align="center">
-	<img src="assets/logo.png" alt="Cultur'O'Guides Logo" width="200" style="border-radius: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);" />
+![Cultur'O'Guides Logo](assets/logo.png)
 
-	<h1>Cultur'O'Guides</h1>
-	<p><strong>Le jeu interactif ultime pour célébrer la Francophonie chez les Google Local Guides.</strong></p>
+# Cultur'O'Guides
 
-	<p>
-		<span title="Algérie" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇩🇿</span>
-		<span title="Bénin" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇧🇯</span>
-		<span title="Brésil" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇧🇷</span>
-		<span title="Burkina Faso" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇧🇫</span>
-		<span title="Burundi" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇧🇮</span>
-		<span title="Canada" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇨🇦</span>
-		<span title="Côte d'Ivoire" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇨🇮</span>
-		<span title="France" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇫🇷</span>
-		<span title="Guinée" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇬🇳</span>
-		<span title="Inde" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇮🇳</span>
-		<span title="Maroc" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇲🇦</span>
-		<span title="Mexique" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇲🇽</span>
-		<span title="Nigeria" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇳🇬</span>
-		<span title="RDC" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇨🇩</span>
-		<span title="Suisse" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇨🇭</span>
-		<span title="Togo" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇹🇬</span>
-	</p>
-</div>
+**Le jeu interactif ultime pour célébrer la Francophonie chez les Google Local Guides.**
+
+🇩🇿 🇧🇯 🇧🇷 🇧🇫 🇧🇮 🇨🇦 🇨🇮 🇫🇷 🇬🇳 🇮🇳 🇲🇦 🇲🇽 🇳🇬 🇨🇩 🇨🇭 🇹🇬
 
 ## Contexte du Projet
 
