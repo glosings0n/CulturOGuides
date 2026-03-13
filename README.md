@@ -4,22 +4,24 @@
 	<h1>Cultur'O'Guides</h1>
 	<p><strong>Le jeu interactif ultime pour célébrer la Francophonie chez les Google Local Guides.</strong></p>
 
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/dz.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Algérie" title="Algérie" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/bj.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Bénin" title="Bénin" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/br.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Brésil" title="Brésil" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/bf.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Burkina Faso" title="Burkina Faso" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/bi.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Burundi" title="Burundi" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/ca.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Canada" title="Canada" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/ci.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Côte d'Ivoire" title="Côte d'Ivoire" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/fr.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="France" title="France" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/gn.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Guinée" title="Guinée" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/in.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Inde" title="Inde" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/ma.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Maroc" title="Maroc" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/mx.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Mexique" title="Mexique" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/ng.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Nigeria" title="Nigeria" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/cd.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="RDC" title="RDC" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/ch.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Suisse" title="Suisse" /></a>
-	<a href="https://github.com/glosings0n/CulturOGuides"><img src="https://flagcdn.com/w40/tg.png" width="28" style="border-radius: 4px; margin: 0 2px;" alt="Togo" title="Togo" /></a>
+	<p>
+		<img src="https://flagcdn.com/w40/dz.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Algérie" title="Algérie" />
+		<img src="https://flagcdn.com/w40/bj.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Bénin" title="Bénin" />
+		<img src="https://flagcdn.com/w40/br.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Brésil" title="Brésil" />
+		<img src="https://flagcdn.com/w40/bf.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Burkina Faso" title="Burkina Faso" />
+		<img src="https://flagcdn.com/w40/bi.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Burundi" title="Burundi" />
+		<img src="https://flagcdn.com/w40/ca.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Canada" title="Canada" />
+		<img src="https://flagcdn.com/w40/ci.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Côte d'Ivoire" title="Côte d'Ivoire" />
+		<img src="https://flagcdn.com/w40/fr.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="France" title="France" />
+		<img src="https://flagcdn.com/w40/gn.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Guinée" title="Guinée" />
+		<img src="https://flagcdn.com/w40/in.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Inde" title="Inde" />
+		<img src="https://flagcdn.com/w40/ma.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Maroc" title="Maroc" />
+		<img src="https://flagcdn.com/w40/mx.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Mexique" title="Mexique" />
+		<img src="https://flagcdn.com/w40/ng.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Nigeria" title="Nigeria" />
+		<img src="https://flagcdn.com/w40/cd.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="RDC" title="RDC" />
+		<img src="https://flagcdn.com/w40/ch.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Suisse" title="Suisse" />
+		<img src="https://flagcdn.com/w40/tg.png" width="28" style="border-radius: 4px; margin: 2px; vertical-align: middle;" alt="Togo" title="Togo" />
+	</p>
 </div>
 
 ## Contexte du Projet
@@ -44,22 +46,24 @@ Ce projet vise à rassembler, éduquer et divertir les membres en testant leurs 
 
 L'application couvre 16 pays membres ou invités de la communauté francophone:
 
-🇩🇿 Algérie
-🇧🇯 Bénin
-🇧🇷 Brésil
-🇧🇫 Burkina Faso
-🇧🇮 Burundi
-🇨🇦 Canada
-🇨🇮 Côte d'Ivoire
-🇫🇷 France
-🇬🇳 Guinée
-🇮🇳 Inde
-🇲🇦 Maroc
-🇲🇽 Mexique
-🇳🇬 Nigeria
-🇨🇩 RDC
-🇨🇭 Suisse
-🇹🇬 Togo
+| Drapeau | Pays |
+|---|---|
+| <img src="https://flagcdn.com/w40/dz.png" width="24" alt="Algérie" /> | Algérie |
+| <img src="https://flagcdn.com/w40/bj.png" width="24" alt="Bénin" /> | Bénin |
+| <img src="https://flagcdn.com/w40/br.png" width="24" alt="Brésil" /> | Brésil |
+| <img src="https://flagcdn.com/w40/bf.png" width="24" alt="Burkina Faso" /> | Burkina Faso |
+| <img src="https://flagcdn.com/w40/bi.png" width="24" alt="Burundi" /> | Burundi |
+| <img src="https://flagcdn.com/w40/ca.png" width="24" alt="Canada" /> | Canada |
+| <img src="https://flagcdn.com/w40/ci.png" width="24" alt="Côte d'Ivoire" /> | Côte d'Ivoire |
+| <img src="https://flagcdn.com/w40/fr.png" width="24" alt="France" /> | France |
+| <img src="https://flagcdn.com/w40/gn.png" width="24" alt="Guinée" /> | Guinée |
+| <img src="https://flagcdn.com/w40/in.png" width="24" alt="Inde" /> | Inde |
+| <img src="https://flagcdn.com/w40/ma.png" width="24" alt="Maroc" /> | Maroc |
+| <img src="https://flagcdn.com/w40/mx.png" width="24" alt="Mexique" /> | Mexique |
+| <img src="https://flagcdn.com/w40/ng.png" width="24" alt="Nigeria" /> | Nigeria |
+| <img src="https://flagcdn.com/w40/cd.png" width="24" alt="RDC" /> | RDC |
+| <img src="https://flagcdn.com/w40/ch.png" width="24" alt="Suisse" /> | Suisse |
+| <img src="https://flagcdn.com/w40/tg.png" width="24" alt="Togo" /> | Togo |
 
 ## Technologies Utilisées
 
@@ -87,19 +91,25 @@ Ce projet repose sur une architecture serverless légère, utilisant des technol
 - localStorage: gestion de session (1h) et limite de tentatives (2 essais/heure).
 - Backend via Fetch API: communication asynchrone avec le Web App Endpoint Google Apps Script.
 - Google Sheets:
-	- doPost(): crée ou met à jour le joueur et son score.
-	- doGet(): renvoie les joueurs triés pour alimenter le leaderboard.
+	- `doPost()`: crée ou met à jour le joueur et son score.
+	- `doGet()`: renvoie les joueurs triés pour alimenter le leaderboard.
 
-## Nouvelle Architecture du Projet
+## Architecture du Projet
 
-La structure est maintenant organisée pour être lisible dès le premier coup d'oeil:
+La structure est organisée pour une lecture rapide, avec séparation claire frontend / assets / config:
 
-- index.html
-- src/style.css
-- src/script.js
-- assets/logo.png
-- vercel.json
-- .nojekyll
+```text
+CulturOGuides/
+├── assets/
+│   └── logo.png
+├── src/
+│   ├── script.js
+│   └── style.css
+├── index.html
+├── README.md
+├── vercel.json
+└── .nojekyll
+```
 
 ## Exécuter le projet en local
 
@@ -129,18 +139,7 @@ git clone https://github.com/glosings0n/CulturOGuides.git
 	- Exécuter en tant que: Moi
 	- Accès: Tout le monde
 - Copier l'URL Web App.
-- Dans src/script.js, remplacer la constante GOOGLE_SHEET_URL par votre URL.
-
-## Déploiement Vercel (manuel)
-
-Le projet ne contient plus de workflow GitHub Actions de déploiement automatique.
-
-1. Pousser le dépôt sur GitHub.
-2. Importer le dépôt dans Vercel.
-3. Choisir Framework Preset: Other.
-4. Laisser Build Command vide.
-5. Laisser Output Directory vide.
-6. Déployer.
+- Dans `src/script.js`, remplacer la constante `GOOGLE_SHEET_URL` par votre URL.
 
 ## Comment Contribuer
 
@@ -168,7 +167,10 @@ git push origin feature/AjoutNouvellesQuestions
 5. Ouvrir une Pull Request.
 
 <div align="center">
+	<hr />
 	<i>Un projet pensé, conçu et développé avec passion pour la communauté.</i>
+	<br /><br />
+	<b>Communauté locale et internationale 💙</b>
 	<br /><br />
 	<b>Jeu développé par <a href="https://linktr.ee/glosings0n" target="_blank" rel="noopener noreferrer">@glosings0n</a></b>
 </div>
