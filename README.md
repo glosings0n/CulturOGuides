@@ -5,22 +5,22 @@
 	<p><strong>Le jeu interactif ultime pour célébrer la Francophonie chez les Google Local Guides.</strong></p>
 
 	<p>
-		<kbd><img title="Algérie" alt="Algérie" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/dz.svg" width="22"></kbd>
-		<kbd><img title="Bénin" alt="Bénin" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/bj.svg" width="22"></kbd>
-		<kbd><img title="Brésil" alt="Brésil" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/br.svg" width="22"></kbd>
-		<kbd><img title="Burkina Faso" alt="Burkina Faso" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/bf.svg" width="22"></kbd>
-		<kbd><img title="Burundi" alt="Burundi" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/bi.svg" width="22"></kbd>
-		<kbd><img title="Canada" alt="Canada" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/ca.svg" width="22"></kbd>
-		<kbd><img title="Côte d'Ivoire" alt="Côte d'Ivoire" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/ci.svg" width="22"></kbd>
-		<kbd><img title="France" alt="France" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/fr.svg" width="22"></kbd>
-		<kbd><img title="Guinée" alt="Guinée" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/gn.svg" width="22"></kbd>
-		<kbd><img title="Inde" alt="Inde" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/in.svg" width="22"></kbd>
-		<kbd><img title="Maroc" alt="Maroc" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/ma.svg" width="22"></kbd>
-		<kbd><img title="Mexique" alt="Mexique" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/mx.svg" width="22"></kbd>
-		<kbd><img title="Nigeria" alt="Nigeria" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/ng.svg" width="22"></kbd>
-		<kbd><img title="RDC" alt="RDC" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/cd.svg" width="22"></kbd>
-		<kbd><img title="Suisse" alt="Suisse" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/ch.svg" width="22"></kbd>
-		<kbd><img title="Togo" alt="Togo" src="https://cdn.jsdelivr.net/gh/hampusborgos/country-flags@main/svg/tg.svg" width="22"></kbd>
+		<span title="Algérie" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇩🇿</span>
+		<span title="Bénin" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇧🇯</span>
+		<span title="Brésil" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇧🇷</span>
+		<span title="Burkina Faso" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇧🇫</span>
+		<span title="Burundi" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇧🇮</span>
+		<span title="Canada" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇨🇦</span>
+		<span title="Côte d'Ivoire" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇨🇮</span>
+		<span title="France" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇫🇷</span>
+		<span title="Guinée" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇬🇳</span>
+		<span title="Inde" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇮🇳</span>
+		<span title="Maroc" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇲🇦</span>
+		<span title="Mexique" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇲🇽</span>
+		<span title="Nigeria" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇳🇬</span>
+		<span title="RDC" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇨🇩</span>
+		<span title="Suisse" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇨🇭</span>
+		<span title="Togo" style="display:inline-block; margin:3px; padding:3px 8px; border-radius:8px; background:#0f172a; border:1px solid #334155;">🇹🇬</span>
 	</p>
 </div>
 
