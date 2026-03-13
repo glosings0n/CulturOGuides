@@ -168,18 +168,24 @@
                 // --- SETUP BACKGROUND MUSIC ---
                 const bgMusic = document.getElementById('bg-music');
                 bgMusic.volume = 0.15; // Volume à 15% pour être "Chill" et ne pas casser les oreilles
+                bgMusic.load();
                 
-                // Astuce pour contourner le blocage "Autoplay" des navigateurs
-                // La musique se lance au premier clic de l'utilisateur sur l'écran
-                const startBgm = () => {
-                    if (appState.audioEnabled && bgMusic.paused) {
-                        bgMusic.play().catch(e => console.log("Attente interaction utilisateur pour l'audio"));
-                    }
-                    document.removeEventListener('click', startBgm);
-                    document.removeEventListener('touchstart', startBgm);
+                // Déverrouillage audio robuste (mobile/desktop): on retente jusqu'à vrai démarrage
+                const unlockEvents = ['click', 'touchstart', 'pointerdown', 'keydown'];
+                const handleUnlock = () => this.startBgm();
+                unlockEvents.forEach(evt => document.addEventListener(evt, handleUnlock, true));
+
+                const stopUnlockListeners = () => {
+                    unlockEvents.forEach(evt => document.removeEventListener(evt, handleUnlock, true));
                 };
-                document.addEventListener('click', startBgm);
-                document.addEventListener('touchstart', startBgm);
+
+                bgMusic.addEventListener('playing', stopUnlockListeners);
+                bgMusic.addEventListener('canplay', () => {
+                    if (appState.audioEnabled && bgMusic.paused) this.startBgm();
+                });
+                document.addEventListener('visibilitychange', () => {
+                    if (!document.hidden && appState.audioEnabled && bgMusic.paused) this.startBgm();
+                });
                 // ------------------------------
 
                 // Gestion de la sélection de pays
@@ -199,7 +205,17 @@
                     if (!document.getElementById('view-result').classList.contains('hidden')) {
                         app.scaleCard();
                     }
+                    app.syncFooterLayout();
                 });
+
+                // Observe les changements de visibilité de la bottom nav pour garder le footer visible
+                const nav = document.getElementById('bottom-nav');
+                new MutationObserver(() => this.syncFooterLayout()).observe(nav, {
+                    attributes: true,
+                    attributeFilter: ['class']
+                });
+
+                this.syncFooterLayout();
             },
 
             renderCountryGrid() {
@@ -403,6 +419,43 @@
                     document.getElementById(v).classList.add('hidden');
                 });
                 document.getElementById(viewId).classList.remove('hidden');
+                this.syncFooterLayout();
+            },
+
+            // Garde le footer collé en bas et toujours visible, au-dessus de la nav basse si elle est affichée
+            syncFooterLayout() {
+                const footer = document.getElementById('global-footer');
+                const bottomNav = document.getElementById('bottom-nav');
+                if (!footer || !bottomNav) return;
+
+                const navVisible = !bottomNav.classList.contains('hidden');
+                const navHeight = navVisible ? (bottomNav.offsetHeight || 64) : 0;
+                const footerHeight = footer.offsetHeight || 46;
+
+                footer.style.position = 'absolute';
+                footer.style.left = '0';
+                footer.style.right = '0';
+                footer.style.bottom = `${navHeight}px`;
+                footer.style.zIndex = '30';
+
+                // Laisse de l'espace en bas des vues pour que le contenu reste lisible en scroll
+                const bottomSpace = footerHeight + navHeight + 10;
+                ['view-login', 'view-dashboard', 'view-game', 'view-result'].forEach(id => {
+                    const view = document.getElementById(id);
+                    if (view) view.style.paddingBottom = `${bottomSpace}px`;
+                });
+            },
+
+            startBgm() {
+                const bgMusic = document.getElementById('bg-music');
+                if (!bgMusic || !appState.audioEnabled || !bgMusic.paused) return;
+
+                const playPromise = bgMusic.play();
+                if (playPromise && typeof playPromise.catch === 'function') {
+                    playPromise.catch(() => {
+                        // On garde les listeners d'unlock actifs, prochaine interaction retentera.
+                    });
+                }
             },
 
             startGame(category) {
@@ -597,7 +650,7 @@
                 if(appState.audioEnabled) {
                     document.getElementById('icon-audio-on').classList.remove('hidden');
                     document.getElementById('icon-audio-off').classList.add('hidden');
-                    bgMusic.play(); // Relance la musique de fond
+                    this.startBgm(); // Relance la musique de fond
                 } else {
                     document.getElementById('icon-audio-on').classList.add('hidden');
                     document.getElementById('icon-audio-off').classList.remove('hidden');
