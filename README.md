@@ -1,10 +1,29 @@
-![Cultur'O'Guides Logo](assets/logo.png)
+<p align="center">
+	<img src="assets/logo.png" alt="Cultur'O'Guides Logo" width="260" />
+</p>
+
+<p align="center">
+	<img src="https://flagcdn.com/w40/dz.png" width="24" alt="Algérie" title="Algérie" />
+	<img src="https://flagcdn.com/w40/bj.png" width="24" alt="Bénin" title="Bénin" />
+	<img src="https://flagcdn.com/w40/br.png" width="24" alt="Brésil" title="Brésil" />
+	<img src="https://flagcdn.com/w40/bf.png" width="24" alt="Burkina Faso" title="Burkina Faso" />
+	<img src="https://flagcdn.com/w40/bi.png" width="24" alt="Burundi" title="Burundi" />
+	<img src="https://flagcdn.com/w40/ca.png" width="24" alt="Canada" title="Canada" />
+	<img src="https://flagcdn.com/w40/ci.png" width="24" alt="Côte d'Ivoire" title="Côte d'Ivoire" />
+	<img src="https://flagcdn.com/w40/fr.png" width="24" alt="France" title="France" />
+	<img src="https://flagcdn.com/w40/gn.png" width="24" alt="Guinée" title="Guinée" />
+	<img src="https://flagcdn.com/w40/in.png" width="24" alt="Inde" title="Inde" />
+	<img src="https://flagcdn.com/w40/ma.png" width="24" alt="Maroc" title="Maroc" />
+	<img src="https://flagcdn.com/w40/mx.png" width="24" alt="Mexique" title="Mexique" />
+	<img src="https://flagcdn.com/w40/ng.png" width="24" alt="Nigeria" title="Nigeria" />
+	<img src="https://flagcdn.com/w40/cd.png" width="24" alt="RDC" title="RDC" />
+	<img src="https://flagcdn.com/w40/ch.png" width="24" alt="Suisse" title="Suisse" />
+	<img src="https://flagcdn.com/w40/tg.png" width="24" alt="Togo" title="Togo" />
+</p>
 
 # Cultur'O'Guides
 
 **Le jeu interactif ultime pour célébrer la Francophonie chez les Google Local Guides.**
-
-🇩🇿 🇧🇯 🇧🇷 🇧🇫 🇧🇮 🇨🇦 🇨🇮 🇫🇷 🇬🇳 🇮🇳 🇲🇦 🇲🇽 🇳🇬 🇨🇩 🇨🇭 🇹🇬
 
 ## Contexte du Projet
 
