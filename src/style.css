@@ -173,6 +173,64 @@ body {
             transform-origin: top center;
         }
 
+        #shareable-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 20px;
+            padding: 0 24px;
+            margin: auto 0;
+        }
+
+        #shareable-player-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #res-country-badge {
+            display: grid;
+            grid-template-columns: 16px auto;
+            align-items: center;
+            column-gap: 6px;
+            padding: 4px 12px;
+            min-height: 24px;
+            line-height: 1;
+        }
+
+        #res-country {
+            line-height: 1;
+            transform: translateY(0.5px);
+        }
+
+        #shareable-score-col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #res-score-box {
+            display: grid;
+            grid-template-rows: 20px 1fr;
+            align-items: center;
+            justify-items: center;
+            padding: 10px 10px 8px;
+        }
+
+        #res-score-label {
+            line-height: 1;
+        }
+
+        #res-score {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+
         #view-result {
             justify-content: flex-start;
         }

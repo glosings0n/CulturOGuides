@@ -187,9 +187,9 @@
         <div id="view-result" class="hidden flex-1 flex flex-col items-center justify-center px-2 py-4 sm:p-4 overflow-y-auto fade-in bg-wood-bg relative">
             <h2 class="title-text text-3xl text-center text-wood-dark mb-4">Fin de la session !</h2>
             
-            <!-- Carte résultat — largeur fixe 520×390px, scaling visuel mobile géré par JS -->
+            <!-- Carte résultat — largeur fixe 500×375px, scaling visuel mobile géré par JS -->
             <div class="card-scale-wrapper">
-            <div id="shareable-card" class="wood-panel flex flex-col items-center justify-between text-center shadow-2xl relative overflow-hidden" style="font-family: 'Fredoka', sans-serif; width: 520px; height: 390px; padding: 16px;">
+            <div id="shareable-card" class="wood-panel flex flex-col items-center justify-between text-center shadow-2xl relative overflow-hidden" style="font-family: 'Fredoka', sans-serif; width: 500px; height: 375px; padding: 14px;">
                 <!-- Décoration -->
                 <div class="absolute -top-10 -left-10 w-32 h-32 bg-glg-yellow rounded-full opacity-20 pointer-events-none"></div>
                 <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-glg-green rounded-full opacity-20 pointer-events-none"></div>
@@ -203,23 +203,23 @@
                 </p>
 
                 <!-- Corps : 2 colonnes fixes -->
-                <div class="grid grid-cols-2 items-center w-full z-10" style="gap: 20px; padding: 0 24px; margin: auto 0;">
+                <div id="shareable-body" class="w-full z-10">
 
                     <!-- Colonne 1 : Info Joueur -->
-                    <div class="flex flex-col items-center justify-center w-full">
+                    <div id="shareable-player-col" class="w-full">
                         <img id="res-avatar" src="" class="bg-white rounded-full border-4 border-wood-border shadow-md object-cover block" style="width: 72px; height: 72px; margin-bottom: 8px;" crossorigin="anonymous">
-                        <p id="res-username" class="font-bold text-white text-center" style="font-size: 15px; line-height: 1.2; margin-bottom: 8px; word-break: break-word;">User</p>
-                        <div class="flex flex-row flex-nowrap items-center justify-center bg-white rounded-full shadow-sm w-max mx-auto" style="gap: 6px; padding: 4px 12px;">
+                        <p id="res-username" class="font-bold text-white text-center" style="font-size: 14px; line-height: 1.15; margin-bottom: 8px; word-break: break-word; max-width: 170px;">User</p>
+                        <div id="res-country-badge" class="bg-white rounded-full shadow-sm w-max mx-auto">
                             <img id="res-flag" src="" alt="flag" class="object-cover rounded-sm block" style="width: 16px; height: 12px;" crossorigin="anonymous">
-                            <p id="res-country" class="font-bold text-glg-blue uppercase whitespace-nowrap" style="font-size: 10px; letter-spacing: 0.05em; margin: 0; line-height: 1;">Pays</p>
+                            <p id="res-country" class="font-bold text-glg-blue uppercase whitespace-nowrap" style="font-size: 10px; letter-spacing: 0.05em; margin: 0;">Pays</p>
                         </div>
                     </div>
 
                     <!-- Colonne 2 : Score -->
-                    <div class="flex items-center justify-center w-full">
-                        <div class="bg-wood-dark border-4 border-wood-border rounded-xl flex flex-col items-center justify-center mx-auto" style="width: 155px; height: 108px; box-shadow: inset 0 4px 8px rgba(0,0,0,0.4);">
-                            <p class="text-wood-bg uppercase font-bold" style="font-size: 11px; letter-spacing: 0.12em; margin: 0 0 8px 0; line-height: 1;">Score</p>
-                            <p id="res-score" class="font-black text-glg-yellow leading-none whitespace-nowrap" style="font-size: 46px; margin: 0; text-shadow: 2px 2px 0px #5c3115;">0/10</p>
+                    <div id="shareable-score-col" class="w-full">
+                        <div id="res-score-box" class="bg-wood-dark border-4 border-wood-border rounded-xl mx-auto" style="width: 150px; height: 104px; box-shadow: inset 0 4px 8px rgba(0,0,0,0.4);">
+                            <p id="res-score-label" class="text-wood-bg uppercase font-bold" style="font-size: 11px; letter-spacing: 0.12em; margin: 0;">Score</p>
+                            <p id="res-score" class="font-black text-glg-yellow whitespace-nowrap" style="font-size: 44px; margin: 0; text-shadow: 2px 2px 0px #5c3115;">0/10</p>
                         </div>
                     </div>
 
@@ -258,7 +258,7 @@
         </div>
 
         <!-- ================= NAVIGATION BASSE ================= -->
-        <div id="bottom-nav" class="hidden h-16 bg-wood-dark border-t-4 border-wood-border flex justify-around items-center px-4 sm:border-b-4">
+        <div id="bottom-nav" class="hidden h-16 bg-wood-dark border-t-4 border-wood-border flex justify-around items-center px-4 sm:border-b-4 absolute left-0 right-0 z-40">
             <button onclick="app.toggleAudio()" class="w-12 h-12 flex items-center justify-center wood-btn rounded-full pb-2 hover:bg-wood-base group">
                 <i id="icon-audio-on" data-lucide="volume-2" class="w-6 h-6 text-wood-border group-hover:scale-110 transition-transform"></i>
                 <i id="icon-audio-off" data-lucide="volume-x" class="w-6 h-6 text-wood-border hidden group-hover:scale-110 transition-transform"></i>

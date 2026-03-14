@@ -99,6 +99,9 @@
             hasPlayed: false
         };
 
+        const CARD_EXPORT_WIDTH = 500;
+        const CARD_EXPORT_HEIGHT = 375;
+
         // --- AUDIO SYSTEM (Web Audio API for basic beeps, avoids broken external links) ---
         function initAudio() {
             if (!appState.audioCtx) {
@@ -422,21 +425,29 @@
                 this.syncFooterLayout();
             },
 
-            // Garde le footer collé en bas et toujours visible, au-dessus de la nav basse si elle est affichée
+            // Empile le footer en bas et la nav d'actions juste au-dessus, sans être poussés par les vues
             syncFooterLayout() {
                 const footer = document.getElementById('global-footer');
                 const bottomNav = document.getElementById('bottom-nav');
                 if (!footer || !bottomNav) return;
 
                 const navVisible = !bottomNav.classList.contains('hidden');
-                const navHeight = navVisible ? (bottomNav.offsetHeight || 64) : 0;
                 const footerHeight = footer.offsetHeight || 46;
+                const navHeight = navVisible ? (bottomNav.offsetHeight || 64) : 0;
 
+                // Footer toujours en bas du conteneur
                 footer.style.position = 'absolute';
                 footer.style.left = '0';
                 footer.style.right = '0';
-                footer.style.bottom = `${navHeight}px`;
+                footer.style.bottom = '0';
                 footer.style.zIndex = '30';
+
+                // Navigation d'actions juste au-dessus du footer
+                bottomNav.style.position = 'absolute';
+                bottomNav.style.left = '0';
+                bottomNav.style.right = '0';
+                bottomNav.style.bottom = `${footerHeight}px`;
+                bottomNav.style.zIndex = '40';
 
                 // Laisse de l'espace en bas des vues pour que le contenu reste lisible en scroll
                 const bottomSpace = footerHeight + navHeight + 10;
@@ -637,9 +648,9 @@
                 const wrapper = document.querySelector('.card-scale-wrapper');
                 if (!card || !wrapper) return;
                 const available = wrapper.clientWidth;
-                const scale = Math.min(1, (available - 8) / 520);
+                const scale = Math.min(1, (available - 8) / CARD_EXPORT_WIDTH);
                 card.style.transform = `scale(${scale})`;
-                wrapper.style.height = `${Math.round(390 * scale)}px`;
+                wrapper.style.height = `${Math.round(CARD_EXPORT_HEIGHT * scale)}px`;
             },
 
             // --- UI ACTIONS ---
@@ -888,7 +899,7 @@
                 const prevWrapperHeight = wrapper ? wrapper.style.height : '';
 
                 card.style.transform = 'scale(1)';
-                if (wrapper) wrapper.style.height = '390px';
+                if (wrapper) wrapper.style.height = `${CARD_EXPORT_HEIGHT}px`;
 
                 const restore = () => {
                     card.style.transform = prevTransform;
@@ -903,8 +914,8 @@
                     setTimeout(() => {
                         html2canvas(card, {
                             backgroundColor: null,
-                            width: 520,
-                            height: 390,
+                            width: CARD_EXPORT_WIDTH,
+                            height: CARD_EXPORT_HEIGHT,
                             scale: 2,
                             useCORS: true,
                             allowTaint: false,
@@ -932,16 +943,16 @@
                 const prevTransform = card.style.transform;
                 const prevWrapperHeight = wrapper ? wrapper.style.height : '';
 
-                // Réinitialiser le scale pour capturer à 520×390 (taille réelle, identique sur tous les appareils)
+                // Réinitialiser le scale pour capturer à la taille réelle, identique sur tous les appareils
                 card.style.transform = 'scale(1)';
-                if (wrapper) wrapper.style.height = '390px';
+                if (wrapper) wrapper.style.height = `${CARD_EXPORT_HEIGHT}px`;
 
                 document.fonts.ready.then(() => {
                     setTimeout(() => {
                         html2canvas(card, {
                             backgroundColor: null,
-                            width: 520,
-                            height: 390,
+                            width: CARD_EXPORT_WIDTH,
+                            height: CARD_EXPORT_HEIGHT,
                             scale: 2,
                             useCORS: true,
                             allowTaint: false,
