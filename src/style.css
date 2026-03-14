@@ -238,3 +238,103 @@ body {
         #view-result {
             justify-content: flex-start;
         }
+
+        #app,
+        #view-login,
+        #view-dashboard,
+        #view-game,
+        #view-result {
+            min-height: 0;
+        }
+
+        @media (max-width: 380px) {
+            body {
+                font-size: 14px;
+            }
+
+            .title-text {
+                letter-spacing: 1px;
+            }
+
+            .login-panel {
+                padding: 1.1rem 0.9rem;
+            }
+
+            #country-grid {
+                gap: 0.35rem;
+            }
+
+            #view-dashboard,
+            #view-game,
+            #view-result,
+            #view-login {
+                padding-left: 0.5rem;
+                padding-right: 0.5rem;
+            }
+
+            #view-game #question-text {
+                font-size: 1.15rem;
+                line-height: 1.35;
+            }
+
+            #answers-grid {
+                gap: 0.55rem;
+            }
+
+            #answers-grid .wood-btn {
+                padding: 0.85rem;
+                font-size: 1rem;
+            }
+
+            #view-result .mt-6 {
+                margin-top: 1rem;
+                gap: 1rem;
+            }
+
+            #global-footer p {
+                font-size: 11px;
+                line-height: 1.25;
+                padding: 0 0.5rem;
+            }
+        }
+
+        @media (max-height: 740px) {
+            #view-login .text-center.mt-2 {
+                margin-top: 0.25rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .app-logo-lg {
+                width: 56px;
+                height: 56px;
+            }
+
+            #view-login h1 {
+                font-size: 2.5rem;
+                line-height: 0.95;
+            }
+
+            .login-panel {
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+
+            #view-login label {
+                margin-bottom: 0.5rem;
+                font-size: 1rem;
+            }
+
+            #input-username {
+                margin-bottom: 1rem;
+                padding-top: 0.7rem;
+                padding-bottom: 0.7rem;
+            }
+
+            #view-dashboard .grid {
+                gap: 0.6rem;
+            }
+
+            #view-result h2 {
+                margin-bottom: 0.75rem;
+            }
+        }

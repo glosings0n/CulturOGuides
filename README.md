@@ -39,7 +39,7 @@ Ce projet vise à rassembler, éduquer et divertir les membres en testant leurs 
 - Leaderboard mondial et podium: classement dynamique avec mise en avant du Top 3.
 - Système anti-triche et limite de session:
 	- pseudo unique par joueur
-	- limite de 2 tentatives par heure (cache local)
+	- limite de 2 tentatives par heure (cache local + verrou serveur Apps Script)
 	- écrasement du score précédent lors d'une nouvelle tentative
 - Avatars dynamiques: génération automatique via DiceBear API.
 
@@ -92,8 +92,10 @@ Ce projet repose sur une architecture serverless légère, utilisant des technol
 - localStorage: gestion de session (1h) et limite de tentatives (2 essais/heure).
 - Backend via Fetch API: communication asynchrone avec le Web App Endpoint Google Apps Script.
 - Google Sheets:
-	- `doPost()`: crée ou met à jour le joueur et son score.
-	- `doGet()`: renvoie les joueurs triés pour alimenter le leaderboard.
+	- `doGet(action=leaderboard)`: renvoie les joueurs triés pour alimenter le leaderboard.
+	- `doGet(action=user)`: recherche un joueur par pseudo.
+	- `doGet(action=attempt)`: réserve une tentative côté serveur avec fenêtre de 1h.
+	- `doGet(action=upsert)` ou `doPost()`: crée ou met à jour le joueur et son score.
 
 ## Architecture du Projet
 
@@ -101,6 +103,8 @@ La structure est organisée pour une lecture rapide, avec séparation claire fro
 
 ```text
 CulturOGuides/
+├── apps-script/
+│   └── Code.gs
 ├── assets/
 │   └── logo.png
 ├── src/
@@ -135,12 +139,18 @@ git clone https://github.com/glosings0n/CulturOGuides.git
 - Nommer la feuille Scores.
 - Ajouter les en-têtes de A à E: Username, Country, Emoji, Avatar, Score.
 - Aller dans Extensions > Apps Script.
-- Coller le script backend.
+- Coller le script backend disponible dans [apps-script/Code.gs](apps-script/Code.gs).
 - Déployer en Web App:
 	- Exécuter en tant que: Moi
 	- Accès: Tout le monde
 - Copier l'URL Web App.
 - Dans `src/script.js`, remplacer la constante `GOOGLE_SHEET_URL` par votre URL.
+
+4. Notes backend importantes
+- Le script crée automatiquement une feuille `Attempts` si elle n'existe pas.
+- Cette feuille stocke la fenêtre d'1 heure et le nombre de tentatives consommées par pseudo.
+- Le frontend garde encore un cache navigateur de 1 heure pour éviter les requêtes inutiles, mais le serveur devient l'autorité finale sur les 2 tentatives.
+- Si le serveur n'est pas joignable, le lancement d'une partie est bloqué pour éviter les désynchronisations de quota en production.
 
 ## Comment Contribuer
 

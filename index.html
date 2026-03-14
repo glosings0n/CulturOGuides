@@ -77,7 +77,7 @@
     <div id="app" class="relative w-full max-w-md md:max-w-3xl lg:max-w-5xl h-[100dvh] sm:h-[95vh] sm:rounded-3xl sm:border-8 border-wood-dark shadow-2xl bg-wood-bg overflow-hidden flex flex-col mx-auto">
         
         <!-- ================= ECRAN 1 : LOGIN ================= -->
-        <div id="view-login" class="flex-1 flex flex-col px-2 py-4 md:p-6 lg:p-8 overflow-y-auto fade-in h-full">
+        <div id="view-login" class="flex-1 flex flex-col px-2 py-4 md:p-6 lg:p-8 overflow-y-auto fade-in h-full min-h-0">
             <div class="text-center mt-2 mb-4">
                 <img src="assets/logo.png" alt="Logo Cultur'O'Guides" class="app-logo app-logo-lg mx-auto mb-2">
                 <h1 class="text-5xl title-text text-glg-yellow">Cultur'O'<br>Guides</h1>
@@ -85,7 +85,7 @@
             </div>
 
             <!-- Espace VERT augmenté drastiquement avec px-14 et px-20 sur grands écrans -->
-            <div class="wood-panel px-6 md:px-14 lg:px-20 py-8 mt-2 flex-1 flex flex-col items-center">
+            <div class="wood-panel login-panel px-6 md:px-14 lg:px-20 py-8 mt-2 flex-1 flex flex-col items-center min-h-0">
                 <label class="block text-center font-bold mb-3 text-xl w-full">Ton Pseudo Connect</label>
                 <input type="text" id="input-username" class="input-wood w-full max-w-md p-3 text-center text-lg font-bold mb-8" placeholder="connectPseudo">
 
@@ -102,7 +102,7 @@
         </div>
 
         <!-- ================= ECRAN 2 : DASHBOARD ================= -->
-        <div id="view-dashboard" class="hidden flex-1 flex flex-col px-2 py-4 sm:p-4 fade-in h-full bg-wood-bg">
+        <div id="view-dashboard" class="hidden flex-1 flex flex-col px-2 py-4 sm:p-4 overflow-y-auto fade-in h-full min-h-0 bg-wood-bg">
             <!-- AppBar -->
             <div class="flex justify-between items-center bg-wood-dark text-white p-3 rounded-2xl shadow-md border-2 border-wood-border mb-4">
                 <div class="flex items-center gap-2">
@@ -130,7 +130,7 @@
             </div>
 
             <!-- Catégories -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 flex-1 content-center w-full max-w-4xl mx-auto pb-4">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 flex-1 content-start sm:content-center w-full max-w-4xl mx-auto pb-4 min-h-0">
                 <button onclick="app.startGame('culture')" class="wood-panel aspect-square p-2 sm:p-4 flex flex-col items-center justify-center transform transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:border-glg-blue active:scale-95 shadow-lg border-b-8 border-b-wood-border cursor-pointer group">
                     <span class="text-4xl sm:text-5xl mb-2 sm:mb-3 group-hover:scale-110 transition-transform">🎵</span>
                     <span class="font-bold text-center leading-tight text-xs sm:text-sm md:text-base group-hover:text-glg-blue transition-colors">Culture &<br>Talents</span>
@@ -155,7 +155,7 @@
         </div>
 
         <!-- ================= ECRAN 3 : JEU ================= -->
-        <div id="view-game" class="hidden flex-1 flex flex-col px-2 py-4 sm:p-4 fade-in bg-wood-bg">
+        <div id="view-game" class="hidden flex-1 flex flex-col px-2 py-4 sm:p-4 overflow-y-auto fade-in min-h-0 bg-wood-bg">
             <!-- Header Jeu -->
             <div class="flex justify-between items-center mb-4 max-w-3xl mx-auto w-full">
                 <div class="wood-panel px-4 py-2 text-center border-2 border-wood-border">
@@ -351,13 +351,27 @@
         <!-- ================= MODAL LIMIT REACHED (2 ATTEMPTS) ================= -->
         <div id="modal-limit" class="hidden absolute inset-0 modal-overlay z-[70] flex items-center justify-center p-4 backdrop-blur-md">
             <div class="wood-panel p-6 text-center max-w-sm w-full slide-up flex flex-col items-center shadow-2xl">
-                <h2 class="title-text text-3xl text-glg-red mb-2">Limite Atteinte</h2>
+                <h2 id="limit-title" class="title-text text-3xl text-glg-red mb-2">Limite Atteinte</h2>
                 <i data-lucide="timer-off" class="w-16 h-16 text-wood-dark mb-4 animate-pulse"></i>
-                <p class="text-sm font-bold mb-6 text-wood-dark bg-white/50 p-3 rounded-lg border border-wood-border/20">
+                <p id="limit-message" class="text-sm font-bold mb-6 text-wood-dark bg-white/50 p-3 rounded-lg border border-wood-border/20">
                     Vous avez déjà atteint la limite de <span class="text-glg-red text-lg">2 tentatives</span> autorisées.
                     <br><br>Veuillez revenir dans 1 heure pour retenter votre chance !
                 </p>
                 <button onclick="document.getElementById('modal-limit').classList.add('hidden')" class="wood-btn wood-btn-primary w-full py-3 text-lg">J'ai compris</button>
+            </div>
+        </div>
+
+        <!-- ================= MODAL PREPARING GAME ================= -->
+        <div id="modal-preparing" class="hidden absolute inset-0 modal-overlay z-[75] flex items-center justify-center p-4 backdrop-blur-md">
+            <div class="wood-panel p-6 text-center max-w-sm w-full slide-up flex flex-col items-center shadow-2xl">
+                <h2 class="title-text text-2xl text-glg-yellow mb-2">Préparation en cours</h2>
+                <div class="loader mb-4" style="width: 44px; height: 44px; border-width: 5px;"></div>
+                <p id="preparing-line-1" class="text-base font-black text-wood-dark bg-white/55 px-3 py-2 rounded-lg border border-wood-border/20 mb-3 w-full">
+                    Nous préparons vos 10 questions...
+                </p>
+                <p id="preparing-line-2" class="text-sm font-bold text-white/95 leading-relaxed">
+                    Un instant, on calibre le chrono et on peaufine votre défi.
+                </p>
             </div>
         </div>
 

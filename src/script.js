@@ -1,775 +1,971 @@
 // CONFIGURATION GOOGLE SHEETS APP SCRIPT URL
-        // Remplacer cette URL par celle générée lors du déploiement de votre Google Apps Script
-        const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwUWD2Pj0ZpWWydb7bJJw_EHE7N0fPOy1aJ95Qu9IezNC5zhXB7d3Iz5EIl17X-QU46/exec"; 
+// Remplacer cette URL par celle générée lors du déploiement de votre Google Apps Script
+const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbwkxnrZGOuv6KkMwU4OwGF9aNwfJHvnTtx5LWX2qKrG4VoUEetiiqia4PHPjGCcPUqP/exec";
 
-        // LISTE DES PAYS (Triée par ordre alphabétique)
-        const COUNTRIES = [
-            { id: 'dz', name: 'Algérie' },
-            { id: 'bj', name: 'Bénin' },
-            { id: 'br', name: 'Brésil' },
-            { id: 'bf', name: 'Burkina' },
-            { id: 'bi', name: 'Burundi' },
-            { id: 'ca', name: 'Canada' },
-            { id: 'ci', name: "Côte d'Ivoire" },
-            { id: 'fr', name: 'France' },
-            { id: 'gn', name: 'Guinée' },
-            { id: 'in', name: 'Inde' },
-            { id: 'ma', name: 'Maroc' },
-            { id: 'mx', name: 'Mexique' },
-            { id: 'ng', name: 'Nigeria' },
-            { id: 'cd', name: 'RDC' },
-            { id: 'ch', name: 'Suisse' },
-            { id: 'tg', name: 'Togo' }
-        ];
+// LISTE DES PAYS (Triée par ordre alphabétique)
+const COUNTRIES = [
+    { id: 'dz', name: 'Algérie' },
+    { id: 'bj', name: 'Bénin' },
+    { id: 'br', name: 'Brésil' },
+    { id: 'bf', name: 'Burkina' },
+    { id: 'bi', name: 'Burundi' },
+    { id: 'ca', name: 'Canada' },
+    { id: 'ci', name: "Côte d'Ivoire" },
+    { id: 'fr', name: 'France' },
+    { id: 'gn', name: 'Guinée' },
+    { id: 'in', name: 'Inde' },
+    { id: 'ma', name: 'Maroc' },
+    { id: 'mx', name: 'Mexique' },
+    { id: 'ng', name: 'Nigeria' },
+    { id: 'cd', name: 'RDC' },
+    { id: 'ch', name: 'Suisse' },
+    { id: 'tg', name: 'Togo' }
+];
 
-        // BASE DE DONNÉES DES QUESTIONS (10 par cat : 5 Faciles, 4 Moyennes, 1 Difficile)
-        const QUESTIONS = {
-            culture: [
-                // FACILES
-                { q: "De quel pays est originaire la célèbre chanteuse Céline Dion ?", options: ["France", "Suisse", "Canada", "Belgique"], a: "Canada" },
-                { q: "De quel pays vient Fally Ipupa, star de la musique africaine ?", options: ["RDC", "Côte d'Ivoire", "Nigeria", "Bénin"], a: "RDC" },
-                { q: "Quel pays est mondialement connu pour son Festival de Cannes ?", options: ["Suisse", "Canada", "France", "Maroc"], a: "France" },
-                { q: "Le groupe Magic System, célèbre pour la chanson 'Premier Gaou', vient de...", options: ["Guinée", "Togo", "Bénin", "Côte d'Ivoire"], a: "Côte d'Ivoire" },
-                { q: "Dans quel pays est né le légendaire footballeur Pelé ?", options: ["Mexique", "Brésil", "France", "Nigeria"], a: "Brésil" },
-                // MOYENNES
-                { q: "'Nollywood' est l'industrie du cinéma très célèbre de quel pays ?", options: ["Afrique du Sud", "Kenya", "Nigeria", "RDC"], a: "Nigeria" },
-                { q: "Angélique Kidjo, lauréate de plusieurs Grammy Awards, est originaire du...", options: ["Bénin", "Togo", "Burkina", "Guinée"], a: "Bénin" },
-                { q: "L'humoriste Jamel Debbouze a des origines de quel pays d'Afrique du Nord ?", options: ["Algérie", "Tunisie", "Maroc", "Égypte"], a: "Maroc" },
-                { q: "L'auteur de la célèbre bande dessinée 'Titeuf', Zep, est de quelle nationalité ?", options: ["Française", "Belge", "Canadienne", "Suisse"], a: "Suisse" },
-                // DIFFICILE
-                { q: "L'écrivain Camara Laye, auteur du célèbre roman 'L'Enfant noir', est natif de...", options: ["Sénégal", "Mali", "Guinée", "Côte d'Ivoire"], a: "Guinée" }
-            ],
-            pays: [
-                // FACILES
-                { q: "Quelle est la capitale de la France ?", options: ["Lyon", "Marseille", "Paris", "Bordeaux"], a: "Paris" },
-                { q: "Ottawa est la capitale de quel grand pays nord-américain ?", options: ["États-Unis", "Canada", "Mexique", "Groenland"], a: "Canada" },
-                { q: "Rabat est la capitale de quel pays d'Afrique du Nord ?", options: ["Algérie", "Maroc", "Tunisie", "Libye"], a: "Maroc" },
-                { q: "Kinshasa est la plus grande ville et capitale de quel pays ?", options: ["RDC", "Congo-Brazzaville", "Burundi", "Angola"], a: "RDC" },
-                { q: "Quelle est la capitale de l'Inde ?", options: ["Mumbai", "New Delhi", "Calcutta", "Bangalore"], a: "New Delhi" },
-                // MOYENNES
-                { q: "Quelle est la capitale de la Suisse ?", options: ["Genève", "Zurich", "Berne", "Lausanne"], a: "Berne" },
-                { q: "Lomé est la capitale de quel pays d'Afrique de l'Ouest ?", options: ["Bénin", "Guinée", "Burkina", "Togo"], a: "Togo" },
-                { q: "Quel est le pays le plus vaste d'Afrique par sa superficie ?", options: ["RDC", "Algérie", "Nigeria", "Soudan"], a: "Algérie" },
-                { q: "Dans quel pays se trouve la péninsule du Yucatán ?", options: ["Brésil", "Colombie", "Mexique", "Pérou"], a: "Mexique" },
-                // DIFFICILE
-                { q: "Depuis 2019, quelle ville est devenue la capitale politique du Burundi ?", options: ["Bujumbura", "Gitega", "Ngozi", "Rumonge"], a: "Gitega" }
-            ],
-            lieux: [
-                // FACILES
-                { q: "Chichén Itzá, cité préhispanique Maya classée par l'UNESCO et élue Nouvelle Merveille du Monde, se situe dans quel pays ?", options: ["Guatemala", "Brésil", "Nigeria", "Mexique"], a: "Mexique" },
-                { q: "Ce quartier historique aux rues pavées et édifices des XVIIe–XIXe siècles, longeant un grand fleuve, est le cœur fondateur de la plus grande métropole francophone des Amériques. Dans quel pays se trouve-t-il ?", options: ["France", "Maroc", "Canada", "Suisse"], a: "Canada" },
-                { q: "Le Lac Tanganyika, l'un des lacs les plus profonds du monde, est bordé de plages paisibles comme Saga Plage où l'on peut se baigner, naviguer en bateau et observer des hippopotames. Dans quel petit pays enclavé d'Afrique centrale ce lac constitue-t-il une attraction majeure ?", options: ["Togo", "RDC", "Burundi", "Guinée"], a: "Burundi" },
-                { q: "Les Saintes-Maries-de-la-Mer, commune côtière populaire pour ses plages et ses balades à vélo, se situe dans le sud de quel pays ?", options: ["Algérie", "Maroc", "Canada", "France"], a: "France" },
-                { q: "Le Parc National des Virunga, le plus ancien d'Afrique, célèbre pour ses gorilles de montagne et le volcan Nyiragongo, se trouve en...", options: ["Kenya", "Togo", "Burundi", "RDC"], a: "RDC" },
-                // MOYENNES
-                { q: "Ce grand pont suspendu à près de 200 mètres de hauteur, niché dans les montagnes alpines, offre une vue imprenable et du saut à l'élastique pour les plus courageux. Dans quel pays d'Europe centrale se trouve-t-il ?", options: ["France", "Belgique", "Canada", "Suisse"], a: "Suisse" },
-                { q: "La Cascade de Kpimé, belle chute d'eau naturelle proche de Kpalimé, se trouve dans quel pays d'Afrique de l'Ouest ?", options: ["Bénin", "Burkina", "Guinée", "Togo"], a: "Togo" },
-                { q: "Le musée de Benin City, conservant l'héritage d'un ancien royaume africain avec son palais royal et ses traditions, se trouve dans quel pays ?", options: ["Bénin", "RDC", "Côte d'Ivoire", "Nigeria"], a: "Nigeria" },
-                { q: "Le Fouta-Djalon, région montagneuse aux cascades spectaculaires comme la Chute de la Dame du Mali, est situé dans quel pays ?", options: ["Mali", "Côte d'Ivoire", "Maroc", "Guinée"], a: "Guinée" },
-                // DIFFICILE
-                { q: "La Huasteca Potosina, région naturelle aux cascades turquoise, à la grotte Sótano de las Golondrinas et aux jungles explorables en bateau, est une destination d'écotourisme de rêve. Dans quel pays d'Amérique latine se trouve-t-elle ?", options: ["Colombie", "Brésil", "Guatemala", "Mexique"], a: "Mexique" }
-            ],
-            mots: [
-                // FACILES
-                { q: "Quel pain long et croustillant est le symbole de la gastronomie française ?", options: ["La brioche", "Le croissant", "La baguette", "Le pain de mie"], a: "La baguette" },
-                { q: "Quel liquide sucré, tiré d'un arbre, est l'emblème culinaire du Canada ?", options: ["Le miel d'acacia", "Le sirop d'érable", "La sève de bouleau", "Le caramel"], a: "Le sirop d'érable" },
-                { q: "Quel plat populaire mexicain est composé d'une galette pliée remplie de viande ?", options: ["Le sushi", "La pizza", "Le taco", "Le couscous"], a: "Le taco" },
-                { q: "Quelle spécialité suisse consiste à tremper des morceaux de pain dans du fromage fondu ?", options: ["La raclette", "La fondue", "La tartiflette", "Le gratin"], a: "La fondue" },
-                { q: "Qu'est-ce que l'Attiéké, un plat très populaire en Côte d'Ivoire ?", options: ["Une sauce piquante", "Une semoule de manioc", "Un poisson braisé", "Une boisson locale"], a: "Une semoule de manioc" },
-                // MOYENNES
-                { q: "Au Congo et en RDC, que signifie 'Saper' dans le mouvement culturel de la SAPE ?", options: ["Danser vite", "Boire beaucoup", "Bien s'habiller", "Couper du bois"], a: "Bien s'habiller" },
-                { q: "La 'Babouche' est une chaussure traditionnelle en cuir très populaire au...", options: ["Maroc", "Sénégal", "Brésil", "Inde"], a: "Maroc" },
-                { q: "Qu'est-ce qu'un 'Zémidjan' couramment utilisé au Togo et au Bénin ?", options: ["Un repas épicé", "Une moto-taxi", "Un vêtement coloré", "Un instrument de musique"], a: "Une moto-taxi" },
-                { q: "De quel pays d'Afrique du Nord le 'Raï' est-il un genre musical traditionnel ?", options: ["Égypte", "Maroc", "Tunisie", "Algérie"], a: "Algérie" },
-                // DIFFICILE
-                { q: "Au Burundi, quel instrument est au centre de performances sacrées classées par l'UNESCO ?", options: ["Le balafon", "La kora", "Le tambour", "La flûte en bambou"], a: "Le tambour" }
-            ]
+// BASE DE DONNÉES DES QUESTIONS (10 par cat : 5 Faciles, 4 Moyennes, 1 Difficile)
+const QUESTIONS = {
+    culture: [
+        // FACILES
+        { q: "De quel pays est originaire la célèbre chanteuse Céline Dion ?", options: ["France", "Suisse", "Canada", "Belgique"], a: "Canada" },
+        { q: "De quel pays vient Fally Ipupa, star de la musique africaine ?", options: ["RDC", "Côte d'Ivoire", "Nigeria", "Bénin"], a: "RDC" },
+        { q: "Quel pays est mondialement connu pour son Festival de Cannes ?", options: ["Suisse", "Canada", "France", "Maroc"], a: "France" },
+        { q: "Le groupe Magic System, célèbre pour la chanson 'Premier Gaou', vient de...", options: ["Guinée", "Togo", "Bénin", "Côte d'Ivoire"], a: "Côte d'Ivoire" },
+        { q: "Dans quel pays est né le légendaire footballeur Pelé ?", options: ["Mexique", "Brésil", "France", "Nigeria"], a: "Brésil" },
+        // MOYENNES
+        { q: "'Nollywood' est l'industrie du cinéma très célèbre de quel pays ?", options: ["Afrique du Sud", "Kenya", "Nigeria", "RDC"], a: "Nigeria" },
+        { q: "Angélique Kidjo, lauréate de plusieurs Grammy Awards, est originaire du...", options: ["Bénin", "Togo", "Burkina", "Guinée"], a: "Bénin" },
+        { q: "L'humoriste Jamel Debbouze a des origines de quel pays d'Afrique du Nord ?", options: ["Algérie", "Tunisie", "Maroc", "Égypte"], a: "Maroc" },
+        { q: "L'auteur de la célèbre bande dessinée 'Titeuf', Zep, est de quelle nationalité ?", options: ["Française", "Belge", "Canadienne", "Suisse"], a: "Suisse" },
+        // DIFFICILE
+        { q: "L'écrivain Camara Laye, auteur du célèbre roman 'L'Enfant noir', est natif de...", options: ["Sénégal", "Mali", "Guinée", "Côte d'Ivoire"], a: "Guinée" }
+    ],
+    pays: [
+        // FACILES
+        { q: "Quelle est la capitale de la France ?", options: ["Lyon", "Marseille", "Paris", "Bordeaux"], a: "Paris" },
+        { q: "Ottawa est la capitale de quel grand pays nord-américain ?", options: ["États-Unis", "Canada", "Mexique", "Groenland"], a: "Canada" },
+        { q: "Rabat est la capitale de quel pays d'Afrique du Nord ?", options: ["Algérie", "Maroc", "Tunisie", "Libye"], a: "Maroc" },
+        { q: "Kinshasa est la plus grande ville et capitale de quel pays ?", options: ["RDC", "Congo-Brazzaville", "Burundi", "Angola"], a: "RDC" },
+        { q: "Quelle est la capitale de l'Inde ?", options: ["Mumbai", "New Delhi", "Calcutta", "Bangalore"], a: "New Delhi" },
+        // MOYENNES
+        { q: "Quelle est la capitale de la Suisse ?", options: ["Genève", "Zurich", "Berne", "Lausanne"], a: "Berne" },
+        { q: "Lomé est la capitale de quel pays d'Afrique de l'Ouest ?", options: ["Bénin", "Guinée", "Burkina", "Togo"], a: "Togo" },
+        { q: "Quel est le pays le plus vaste d'Afrique par sa superficie ?", options: ["RDC", "Algérie", "Nigeria", "Soudan"], a: "Algérie" },
+        { q: "Dans quel pays se trouve la péninsule du Yucatán ?", options: ["Brésil", "Colombie", "Mexique", "Pérou"], a: "Mexique" },
+        // DIFFICILE
+        { q: "Depuis 2019, quelle ville est devenue la capitale politique du Burundi ?", options: ["Bujumbura", "Gitega", "Ngozi", "Rumonge"], a: "Gitega" }
+    ],
+    lieux: [
+        // FACILES
+        { q: "Chichén Itzá, cité préhispanique Maya classée par l'UNESCO et élue Nouvelle Merveille du Monde, se situe dans quel pays ?", options: ["Guatemala", "Brésil", "Nigeria", "Mexique"], a: "Mexique" },
+        { q: "Ce quartier historique aux rues pavées et édifices des XVIIe–XIXe siècles, longeant un grand fleuve, est le cœur fondateur de la plus grande métropole francophone des Amériques. Dans quel pays se trouve-t-il ?", options: ["France", "Maroc", "Canada", "Suisse"], a: "Canada" },
+        { q: "Le Lac Tanganyika, l'un des lacs les plus profonds du monde, est bordé de plages paisibles comme Saga Plage où l'on peut se baigner, naviguer en bateau et observer des hippopotames. Dans quel petit pays enclavé d'Afrique centrale ce lac constitue-t-il une attraction majeure ?", options: ["Togo", "RDC", "Burundi", "Guinée"], a: "Burundi" },
+        { q: "Les Saintes-Maries-de-la-Mer, commune côtière populaire pour ses plages et ses balades à vélo, se situe dans le sud de quel pays ?", options: ["Algérie", "Maroc", "Canada", "France"], a: "France" },
+        { q: "Le Parc National des Virunga, le plus ancien d'Afrique, célèbre pour ses gorilles de montagne et le volcan Nyiragongo, se trouve en...", options: ["Kenya", "Togo", "Burundi", "RDC"], a: "RDC" },
+        // MOYENNES
+        { q: "Ce grand pont suspendu à près de 200 mètres de hauteur, niché dans les montagnes alpines, offre une vue imprenable et du saut à l'élastique pour les plus courageux. Dans quel pays d'Europe centrale se trouve-t-il ?", options: ["France", "Belgique", "Canada", "Suisse"], a: "Suisse" },
+        { q: "La Cascade de Kpimé, belle chute d'eau naturelle proche de Kpalimé, se trouve dans quel pays d'Afrique de l'Ouest ?", options: ["Bénin", "Burkina", "Guinée", "Togo"], a: "Togo" },
+        { q: "Le musée de Benin City, conservant l'héritage d'un ancien royaume africain avec son palais royal et ses traditions, se trouve dans quel pays ?", options: ["Bénin", "RDC", "Côte d'Ivoire", "Nigeria"], a: "Nigeria" },
+        { q: "Le Fouta-Djalon, région montagneuse aux cascades spectaculaires comme la Chute de la Dame du Mali, est situé dans quel pays ?", options: ["Mali", "Côte d'Ivoire", "Maroc", "Guinée"], a: "Guinée" },
+        // DIFFICILE
+        { q: "La Huasteca Potosina, région naturelle aux cascades turquoise, à la grotte Sótano de las Golondrinas et aux jungles explorables en bateau, est une destination d'écotourisme de rêve. Dans quel pays d'Amérique latine se trouve-t-elle ?", options: ["Colombie", "Brésil", "Guatemala", "Mexique"], a: "Mexique" }
+    ],
+    mots: [
+        // FACILES
+        { q: "Quel pain long et croustillant est le symbole de la gastronomie française ?", options: ["La brioche", "Le croissant", "La baguette", "Le pain de mie"], a: "La baguette" },
+        { q: "Quel liquide sucré, tiré d'un arbre, est l'emblème culinaire du Canada ?", options: ["Le miel d'acacia", "Le sirop d'érable", "La sève de bouleau", "Le caramel"], a: "Le sirop d'érable" },
+        { q: "Quel plat populaire mexicain est composé d'une galette pliée remplie de viande ?", options: ["Le sushi", "La pizza", "Le taco", "Le couscous"], a: "Le taco" },
+        { q: "Quelle spécialité suisse consiste à tremper des morceaux de pain dans du fromage fondu ?", options: ["La raclette", "La fondue", "La tartiflette", "Le gratin"], a: "La fondue" },
+        { q: "Qu'est-ce que l'Attiéké, un plat très populaire en Côte d'Ivoire ?", options: ["Une sauce piquante", "Une semoule de manioc", "Un poisson braisé", "Une boisson locale"], a: "Une semoule de manioc" },
+        // MOYENNES
+        { q: "Au Congo et en RDC, que signifie 'Saper' dans le mouvement culturel de la SAPE ?", options: ["Danser vite", "Boire beaucoup", "Bien s'habiller", "Couper du bois"], a: "Bien s'habiller" },
+        { q: "La 'Babouche' est une chaussure traditionnelle en cuir très populaire au...", options: ["Maroc", "Sénégal", "Brésil", "Inde"], a: "Maroc" },
+        { q: "Qu'est-ce qu'un 'Zémidjan' couramment utilisé au Togo et au Bénin ?", options: ["Un repas épicé", "Une moto-taxi", "Un vêtement coloré", "Un instrument de musique"], a: "Une moto-taxi" },
+        { q: "De quel pays d'Afrique du Nord le 'Raï' est-il un genre musical traditionnel ?", options: ["Égypte", "Maroc", "Tunisie", "Algérie"], a: "Algérie" },
+        // DIFFICILE
+        { q: "Au Burundi, quel instrument est au centre de performances sacrées classées par l'UNESCO ?", options: ["Le balafon", "La kora", "Le tambour", "La flûte en bambou"], a: "Le tambour" }
+    ]
+};
+
+// ETAT DE L'APPLICATION
+const appState = {
+    user: { username: '', countryName: '', countryFlag: '', avatarUrl: '' },
+    currentQuestions: [],
+    qIndex: 0,
+    score: 0,
+    timeLeft: 90,
+    timerInterval: null,
+    audioEnabled: true,
+    audioCtx: null,
+    hasPlayed: false
+};
+
+const CARD_EXPORT_WIDTH = 500;
+const CARD_EXPORT_HEIGHT = 375;
+const SESSION_STORAGE_KEY = 'cog_user_session';
+const SESSION_TTL_MS = 60 * 60 * 1000;
+const MAX_ATTEMPTS_PER_SESSION = 2;
+const BACKEND_PLACEHOLDER_HINTS = ["VOTRE_URL", "VOTRE_URL_WEB_APP_ICI"];
+
+// --- AUDIO SYSTEM (Web Audio API for basic beeps, avoids broken external links) ---
+function initAudio() {
+    if (!appState.audioCtx) {
+        appState.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+}
+
+function playSound(type) {
+    if (!appState.audioEnabled) return;
+    initAudio();
+    const ctx = appState.audioCtx;
+    if (ctx.state === 'suspended') ctx.resume();
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    if (type === 'success') {
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1); // A5
+        gain.gain.setValueAtTime(0.5, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.3);
+    } else if (type === 'fail') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(300, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.5, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.3);
+    } else if (type === 'win') {
+        // Chord
+        [523.25, 659.25, 783.99].forEach(freq => {
+            let o = ctx.createOscillator();
+            let g = ctx.createGain();
+            o.type = 'triangle';
+            o.frequency.value = freq;
+            o.connect(g);
+            g.connect(ctx.destination);
+            g.gain.setValueAtTime(0.3, ctx.currentTime);
+            g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1);
+            o.start(ctx.currentTime);
+            o.stop(ctx.currentTime + 1);
+        });
+    } else if (type === 'lose') {
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(200, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.8);
+        gain.gain.setValueAtTime(0.5, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.8);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.8);
+    }
+}
+
+// --- APP CONTROLLER ---
+const app = {
+    leaderboardData: [], // Stocke les données du leaderboard pour le téléchargement
+    preparingTextInterval: null,
+    preparingStartedAt: 0,
+    init() {
+        this.renderCountryGrid();
+        this.checkSession(); // Vérification de la session au démarrage
+
+        // --- SETUP BACKGROUND MUSIC ---
+        const bgMusic = document.getElementById('bg-music');
+        bgMusic.volume = 0.15; // Volume à 15% pour être "Chill" et ne pas casser les oreilles
+        bgMusic.load();
+
+        // Déverrouillage audio robuste (mobile/desktop): on retente jusqu'à vrai démarrage
+        const unlockEvents = ['click', 'touchstart', 'pointerdown', 'keydown'];
+        const handleUnlock = () => this.startBgm();
+        unlockEvents.forEach(evt => document.addEventListener(evt, handleUnlock, true));
+
+        const stopUnlockListeners = () => {
+            unlockEvents.forEach(evt => document.removeEventListener(evt, handleUnlock, true));
         };
 
-        // ETAT DE L'APPLICATION
-        const appState = {
-            user: { username: '', countryName: '', countryFlag: '', avatarUrl: '' },
-            currentQuestions: [],
-            qIndex: 0,
-            score: 0,
-            timeLeft: 90,
-            timerInterval: null,
-            audioEnabled: true,
-            audioCtx: null,
-            hasPlayed: false
-        };
+        bgMusic.addEventListener('playing', stopUnlockListeners);
+        bgMusic.addEventListener('canplay', () => {
+            if (appState.audioEnabled && bgMusic.paused) this.startBgm();
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && appState.audioEnabled && bgMusic.paused) this.startBgm();
+        });
+        // ------------------------------
 
-        const CARD_EXPORT_WIDTH = 500;
-        const CARD_EXPORT_HEIGHT = 375;
-
-        // --- AUDIO SYSTEM (Web Audio API for basic beeps, avoids broken external links) ---
-        function initAudio() {
-            if (!appState.audioCtx) {
-                appState.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // Gestion de la sélection de pays
+        document.querySelectorAll('.country-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                document.querySelectorAll('.country-card').forEach(c => c.classList.remove('selected'));
+                e.currentTarget.classList.add('selected');
+                appState.user.countryName = e.currentTarget.dataset.name;
+                appState.user.countryFlag = e.currentTarget.dataset.flag;
+                document.getElementById('login-error').classList.add('hidden'); // Cacher l'erreur si on sélectionne
+            });
+        });
+        // Initialisation des icônes Lucide
+        lucide.createIcons();
+        // Recalcul du scale de la carte au redimensionnement
+        window.addEventListener('resize', () => {
+            if (!document.getElementById('view-result').classList.contains('hidden')) {
+                app.scaleCard();
             }
+            app.syncFooterLayout();
+        });
+
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', () => this.syncFooterLayout());
+            window.visualViewport.addEventListener('scroll', () => this.syncFooterLayout());
         }
 
-        function playSound(type) {
-            if (!appState.audioEnabled) return;
-            initAudio();
-            const ctx = appState.audioCtx;
-            if(ctx.state === 'suspended') ctx.resume();
-            
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.connect(gain);
-            gain.connect(ctx.destination);
+        // Observe les changements de visibilité de la bottom nav pour garder le footer visible
+        const nav = document.getElementById('bottom-nav');
+        new MutationObserver(() => this.syncFooterLayout()).observe(nav, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
 
-            if (type === 'success') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
-                osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.1); // A5
-                gain.gain.setValueAtTime(0.5, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-                osc.start(ctx.currentTime);
-                osc.stop(ctx.currentTime + 0.3);
-            } else if (type === 'fail') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(300, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.3);
-                gain.gain.setValueAtTime(0.5, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-                osc.start(ctx.currentTime);
-                osc.stop(ctx.currentTime + 0.3);
-            } else if (type === 'win') {
-                // Chord
-                [523.25, 659.25, 783.99].forEach(freq => {
-                    let o = ctx.createOscillator();
-                    let g = ctx.createGain();
-                    o.type = 'triangle';
-                    o.frequency.value = freq;
-                    o.connect(g);
-                    g.connect(ctx.destination);
-                    g.gain.setValueAtTime(0.3, ctx.currentTime);
-                    g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1);
-                    o.start(ctx.currentTime);
-                    o.stop(ctx.currentTime + 1);
-                });
-            } else if (type === 'lose') {
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(200, ctx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.8);
-                gain.gain.setValueAtTime(0.5, ctx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.8);
-                osc.start(ctx.currentTime);
-                osc.stop(ctx.currentTime + 0.8);
-            }
-        }
+        this.syncFooterLayout();
+    },
 
-        // --- APP CONTROLLER ---
-        const app = {
-            leaderboardData: [], // Stocke les données du leaderboard pour le téléchargement
-            init() {
-                this.renderCountryGrid();
-                this.checkSession(); // Vérification de la session au démarrage
-                
-                // --- SETUP BACKGROUND MUSIC ---
-                const bgMusic = document.getElementById('bg-music');
-                bgMusic.volume = 0.15; // Volume à 15% pour être "Chill" et ne pas casser les oreilles
-                bgMusic.load();
-                
-                // Déverrouillage audio robuste (mobile/desktop): on retente jusqu'à vrai démarrage
-                const unlockEvents = ['click', 'touchstart', 'pointerdown', 'keydown'];
-                const handleUnlock = () => this.startBgm();
-                unlockEvents.forEach(evt => document.addEventListener(evt, handleUnlock, true));
-
-                const stopUnlockListeners = () => {
-                    unlockEvents.forEach(evt => document.removeEventListener(evt, handleUnlock, true));
-                };
-
-                bgMusic.addEventListener('playing', stopUnlockListeners);
-                bgMusic.addEventListener('canplay', () => {
-                    if (appState.audioEnabled && bgMusic.paused) this.startBgm();
-                });
-                document.addEventListener('visibilitychange', () => {
-                    if (!document.hidden && appState.audioEnabled && bgMusic.paused) this.startBgm();
-                });
-                // ------------------------------
-
-                // Gestion de la sélection de pays
-                document.querySelectorAll('.country-card').forEach(card => {
-                    card.addEventListener('click', (e) => {
-                        document.querySelectorAll('.country-card').forEach(c => c.classList.remove('selected'));
-                        e.currentTarget.classList.add('selected');
-                        appState.user.countryName = e.currentTarget.dataset.name;
-                        appState.user.countryFlag = e.currentTarget.dataset.flag;
-                        document.getElementById('login-error').classList.add('hidden'); // Cacher l'erreur si on sélectionne
-                    });
-                });
-                // Initialisation des icônes Lucide
-                lucide.createIcons();
-                // Recalcul du scale de la carte au redimensionnement
-                window.addEventListener('resize', () => {
-                    if (!document.getElementById('view-result').classList.contains('hidden')) {
-                        app.scaleCard();
-                    }
-                    app.syncFooterLayout();
-                });
-
-                if (window.visualViewport) {
-                    window.visualViewport.addEventListener('resize', () => this.syncFooterLayout());
-                    window.visualViewport.addEventListener('scroll', () => this.syncFooterLayout());
-                }
-
-                // Observe les changements de visibilité de la bottom nav pour garder le footer visible
-                const nav = document.getElementById('bottom-nav');
-                new MutationObserver(() => this.syncFooterLayout()).observe(nav, {
-                    attributes: true,
-                    attributeFilter: ['class']
-                });
-
-                this.syncFooterLayout();
-            },
-
-            renderCountryGrid() {
-                const grid = document.getElementById('country-grid');
-                grid.innerHTML = COUNTRIES.map(c => `
+    renderCountryGrid() {
+        const grid = document.getElementById('country-grid');
+        grid.innerHTML = COUNTRIES.map(c => `
                     <!-- Ajustement strict à 10.5% sur LG pour garantir 8 éléments par ligne avec les gaps -->
                     <div class="country-card p-2 flex flex-col items-center justify-center text-center w-[23%] md:w-[14%] lg:w-[10.5%]" data-name="${c.name}" data-flag="https://flagcdn.com/w40/${c.id}.png">
                         <img src="https://flagcdn.com/w40/${c.id}.png" alt="${c.name}" class="w-8 md:w-10 lg:w-12 h-auto mb-1 rounded-sm shadow-sm object-cover border border-gray-200">
                         <span class="text-[9px] md:text-[11px] font-bold uppercase truncate w-full leading-tight text-wood-dark">${c.name}</span>
                     </div>
                 `).join('');
-            },
+    },
 
-            // --- GESTION DE SESSION (CACHE) ---
-            checkSession() {
-                const cachedData = localStorage.getItem('cog_user_session');
-                if (cachedData) {
-                    let session = JSON.parse(cachedData);
-                    const now = new Date().getTime();
-                    // Vérifier si la session a moins de 1 heure (3600000 millisecondes)
-                    if (now - session.timestamp < 3600000) {
-                        // Compatibilité ascendante : on s'assure que attempts existe
-                        if (session.attempts === undefined) {
-                            session.attempts = 0;
-                            localStorage.setItem('cog_user_session', JSON.stringify(session));
-                        }
+    isBackendConfigured() {
+        return Boolean(
+            GOOGLE_SHEET_URL &&
+            !BACKEND_PLACEHOLDER_HINTS.some(hint => GOOGLE_SHEET_URL.includes(hint))
+        );
+    },
 
-                        // Remplir la modale de retour
-                        document.getElementById('wb-avatar').src = session.user.avatarUrl;
-                        document.getElementById('wb-username').textContent = session.user.username;
-                        document.getElementById('wb-country').textContent = session.user.countryName;
-                        document.getElementById('wb-flag').src = session.user.countryFlag;
-                        
-                        this.pendingSession = session.user; // Sauvegarde temporaire
-                        document.getElementById('modal-welcome-back').classList.remove('hidden');
-                        return;
-                    } else {
-                        // Session expirée
-                        localStorage.removeItem('cog_user_session');
-                    }
-                }
-                // Si pas de session valide, on s'assure d'être sur le login
-                this.switchView('view-login');
-            },
+    buildApiUrl(params = {}) {
+        const url = new URL(GOOGLE_SHEET_URL);
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                url.searchParams.set(key, value);
+            }
+        });
+        return url.toString();
+    },
 
-            continueSession() {
-                document.getElementById('modal-welcome-back').classList.add('hidden');
-                appState.user = this.pendingSession;
-                this.updateDashboardUI();
-                this.switchView('view-dashboard');
-                document.getElementById('bottom-nav').classList.remove('hidden');
-                document.getElementById('bottom-nav').classList.add('flex');
-            },
+    async fetchBackendJson(params = {}) {
+        const response = await fetch(this.buildApiUrl(params), {
+            method: 'GET',
+            cache: 'no-store'
+        });
 
-            clearSession() {
-                localStorage.removeItem('cog_user_session');
-                document.getElementById('modal-welcome-back').classList.add('hidden');
-                this.switchView('view-login');
-            },
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
 
-            updateDashboardUI() {
-                document.getElementById('dash-username').textContent = appState.user.username;
-                document.getElementById('dash-country').textContent = appState.user.countryName;
-                document.getElementById('dash-flag').src = appState.user.countryFlag;
-                document.getElementById('dash-flag').classList.remove('hidden');
-                document.getElementById('dash-avatar').src = appState.user.avatarUrl;
-            },
-            // --- FIN GESTION SESSION ---
+        return response.json();
+    },
 
-            async login() {
-                const usernameInput = document.getElementById('input-username').value.trim();
-                const errorDiv = document.getElementById('login-error');
-                const btn = document.getElementById('btn-login');
-                
-                if (!usernameInput) {
-                    errorDiv.textContent = "⚠️ Veuillez entrer votre pseudo !";
-                    errorDiv.classList.remove('hidden');
-                    return;
-                }
-                if (!appState.user.countryName) {
-                    errorDiv.textContent = "⚠️ Veuillez sélectionner votre pays !";
-                    errorDiv.classList.remove('hidden');
-                    return;
-                }
-                
-                errorDiv.classList.add('hidden');
+    normalizeUsername(username) {
+        return (username || '').trim().replace(/^@+/, '').toLowerCase();
+    },
 
-                // Clean username, remove @ if user typed it
-                const username = usernameInput.startsWith('@') ? usernameInput.substring(1) : usernameInput;
-                
-                // --- VÉRIFICATION DU PSEUDO (ANTI-DOUBLON) ---
-                btn.innerHTML = '<div class="inline-block animate-spin w-5 h-5 border-4 border-white border-t-transparent rounded-full align-middle mr-2"></div> Vérification...';
-                btn.disabled = true;
-                btn.classList.add('opacity-70', 'cursor-not-allowed');
+    setLimitModalMessage(message, title = 'Limite Atteinte') {
+        const titleEl = document.getElementById('limit-title');
+        const messageEl = document.getElementById('limit-message');
+        if (titleEl) titleEl.textContent = title;
+        if (messageEl) messageEl.innerHTML = message;
+    },
 
-                try {
-                    let foundUser = null;
+    showPreparingModal(category) {
+        const modal = document.getElementById('modal-preparing');
+        const line1 = document.getElementById('preparing-line-1');
+        const line2 = document.getElementById('preparing-line-2');
+        if (!modal || !line1 || !line2) return;
 
-                    if(!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL === "VOTRE_URL_WEB_APP_ICI" || GOOGLE_SHEET_URL.includes("VOTRE_URL")) {
-                        // Simulation (Mock) si l'URL Google Sheet n'est pas encore connectée (Correction au format PNG ici aussi)
-                        const mockUsers = [
-                            { username: 'Marie', country: 'France', emoji: 'https://flagcdn.com/w40/fr.png', avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Marie&backgroundColor=c0aede,b6e3f4,ffdfbf' },
-                            { username: 'Kofi', country: 'Côte d\'Ivoire', emoji: 'https://flagcdn.com/w40/ci.png', avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Kofi&backgroundColor=c0aede,b6e3f4,ffdfbf' }
-                        ];
-                        foundUser = mockUsers.find(u => u.username.toLowerCase() === username.toLowerCase());
-                        await new Promise(r => setTimeout(r, 800)); // Simule le temps de réseau
-                    } else {
-                        // Vrai appel vers ta base de données Google Sheets
-                        const res = await fetch(GOOGLE_SHEET_URL);
-                        const data = await res.json();
-                        // Vérifie si le nom existe déjà et récupère ses données complètes
-                        foundUser = data.find(u => u.username.toLowerCase() === username.toLowerCase());
-                    }
+        const categoryLabels = {
+            culture: 'Culture & Talents',
+            pays: 'Pays & Capitales',
+            lieux: "Lieux d'exception",
+            mots: 'Mots & Objets'
+        };
 
-                    if (foundUser) {
-                        // Remplir et afficher la popup de compte existant
-                        document.getElementById('af-username-text').textContent = foundUser.username;
-                        document.getElementById('af-avatar').src = foundUser.avatar || `https://api.dicebear.com/7.x/bottts/png?seed=${foundUser.username}&backgroundColor=c0aede,b6e3f4,ffdfbf`;
-                        document.getElementById('af-country').textContent = foundUser.country;
-                        
-                        // Sécurité pour bien afficher le drapeau du joueur retrouvé
-                        const flagSrc = (foundUser.emoji && foundUser.emoji.startsWith('http')) ? foundUser.emoji : appState.user.countryFlag;
-                        document.getElementById('af-flag').src = flagSrc;
+        const dots = ['.', '..', '...'];
+        let idx = 0;
+        const catLabel = categoryLabels[category] || 'Quiz';
+        line1.textContent = 'Nous préparons vos 10 questions...';
+        line2.textContent = `Catégorie ${catLabel}: un défi taillé pour vous.`;
 
-                        this.pendingAccount = foundUser; // On sauvegarde le compte trouvé en attente
+        if (this.preparingTextInterval) {
+            clearInterval(this.preparingTextInterval);
+            this.preparingTextInterval = null;
+        }
 
-                        document.getElementById('modal-account-found').classList.remove('hidden');
-                        
-                        // Restaure le bouton
-                        btn.innerHTML = 'JOUER';
-                        btn.disabled = false;
-                        btn.classList.remove('opacity-70', 'cursor-not-allowed');
-                        return; // On stoppe le processus de création de compte
-                    }
-                } catch (err) {
-                    console.error("Erreur de vérification ignorée pour ne pas bloquer le jeu :", err);
-                }
+        this.preparingStartedAt = Date.now();
+        modal.classList.remove('hidden');
 
-                // Restauration du bouton si le pseudo est libre (NOUVEAU COMPTE)
+        this.preparingTextInterval = setInterval(() => {
+            line1.textContent = `Nous préparons vos 10 questions${dots[idx]}`;
+            idx = (idx + 1) % dots.length;
+        }, 350);
+    },
+
+    async hidePreparingModal() {
+        const modal = document.getElementById('modal-preparing');
+        if (!modal) return;
+
+        const MIN_VISIBLE_MS = 850;
+        const elapsed = Date.now() - this.preparingStartedAt;
+        if (elapsed < MIN_VISIBLE_MS) {
+            await new Promise(resolve => setTimeout(resolve, MIN_VISIBLE_MS - elapsed));
+        }
+
+        if (this.preparingTextInterval) {
+            clearInterval(this.preparingTextInterval);
+            this.preparingTextInterval = null;
+        }
+
+        modal.classList.add('hidden');
+    },
+
+    async findUserByUsername(username) {
+        if (!this.isBackendConfigured()) return null;
+
+        try {
+            const data = await this.fetchBackendJson({
+                action: 'user',
+                username
+            });
+
+            if (data && typeof data === 'object' && 'user' in data) {
+                return data.user;
+            }
+        } catch (err) {
+            console.warn('Lookup utilisateur dédié indisponible, fallback leaderboard:', err);
+        }
+
+        const data = await this.fetchBackendJson({ action: 'leaderboard' });
+        const users = Array.isArray(data) ? data : (Array.isArray(data?.data) ? data.data : []);
+        return users.find(u => this.normalizeUsername(u.username) === this.normalizeUsername(username)) || null;
+    },
+
+    async reserveAttemptOnServer(username) {
+        if (!this.isBackendConfigured()) {
+            return {
+                allowed: true,
+                attemptsUsed: null,
+                remaining: MAX_ATTEMPTS_PER_SESSION
+            };
+        }
+
+        const data = await this.fetchBackendJson({
+            action: 'attempt',
+            username
+        });
+
+        if (!data || typeof data !== 'object' || data.ok !== true) {
+            throw new Error('Réponse backend invalide pour la réservation de tentative.');
+        }
+
+        return data;
+    },
+
+    // --- GESTION DE SESSION (CACHE) ---
+    getValidSession() {
+        const cachedData = localStorage.getItem(SESSION_STORAGE_KEY);
+        if (!cachedData) return null;
+
+        try {
+            const session = JSON.parse(cachedData);
+            const hasUser = session && session.user && session.user.username;
+            const hasValidTimestamp = typeof session?.timestamp === 'number';
+
+            if (!hasUser || !hasValidTimestamp) {
+                localStorage.removeItem(SESSION_STORAGE_KEY);
+                return null;
+            }
+
+            if (Date.now() - session.timestamp >= SESSION_TTL_MS) {
+                localStorage.removeItem(SESSION_STORAGE_KEY);
+                return null;
+            }
+
+            if (!Number.isInteger(session.attempts) || session.attempts < 0) {
+                session.attempts = 0;
+                localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+            }
+
+            return session;
+        } catch {
+            localStorage.removeItem(SESSION_STORAGE_KEY);
+            return null;
+        }
+    },
+
+    saveSession(session) {
+        localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+    },
+
+    checkSession() {
+        const session = this.getValidSession();
+        if (session) {
+            // Remplir la modale de retour
+            document.getElementById('wb-avatar').src = session.user.avatarUrl;
+            document.getElementById('wb-username').textContent = session.user.username;
+            document.getElementById('wb-country').textContent = session.user.countryName;
+            document.getElementById('wb-flag').src = session.user.countryFlag;
+
+            this.pendingSession = session.user; // Sauvegarde temporaire
+            document.getElementById('modal-welcome-back').classList.remove('hidden');
+            return;
+        }
+
+        // Si pas de session valide, on s'assure d'être sur le login
+        this.switchView('view-login');
+    },
+
+    continueSession() {
+        document.getElementById('modal-welcome-back').classList.add('hidden');
+        appState.user = this.pendingSession;
+        this.updateDashboardUI();
+        this.switchView('view-dashboard');
+        document.getElementById('bottom-nav').classList.remove('hidden');
+        document.getElementById('bottom-nav').classList.add('flex');
+    },
+
+    clearSession() {
+        localStorage.removeItem(SESSION_STORAGE_KEY);
+        document.getElementById('modal-welcome-back').classList.add('hidden');
+        this.switchView('view-login');
+    },
+
+    updateDashboardUI() {
+        document.getElementById('dash-username').textContent = appState.user.username;
+        document.getElementById('dash-country').textContent = appState.user.countryName;
+        document.getElementById('dash-flag').src = appState.user.countryFlag;
+        document.getElementById('dash-flag').classList.remove('hidden');
+        document.getElementById('dash-avatar').src = appState.user.avatarUrl;
+    },
+    // --- FIN GESTION SESSION ---
+
+    async login() {
+        const usernameInput = document.getElementById('input-username').value.trim();
+        const errorDiv = document.getElementById('login-error');
+        const btn = document.getElementById('btn-login');
+
+        if (!usernameInput) {
+            errorDiv.textContent = "⚠️ Veuillez entrer votre pseudo !";
+            errorDiv.classList.remove('hidden');
+            return;
+        }
+        if (!appState.user.countryName) {
+            errorDiv.textContent = "⚠️ Veuillez sélectionner votre pays !";
+            errorDiv.classList.remove('hidden');
+            return;
+        }
+
+        errorDiv.classList.add('hidden');
+
+        // Clean username, remove @ if user typed it
+        const username = usernameInput.startsWith('@') ? usernameInput.substring(1) : usernameInput;
+
+        // --- VÉRIFICATION DU PSEUDO (ANTI-DOUBLON) ---
+        btn.innerHTML = '<div class="inline-block animate-spin w-5 h-5 border-4 border-white border-t-transparent rounded-full align-middle mr-2"></div> Vérification...';
+        btn.disabled = true;
+        btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+        try {
+            let foundUser = null;
+
+            if (!this.isBackendConfigured()) {
+                // Simulation (Mock) si l'URL Google Sheet n'est pas encore connectée (Correction au format PNG ici aussi)
+                const mockUsers = [
+                    { username: 'Marie', country: 'France', emoji: 'https://flagcdn.com/w40/fr.png', avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Marie&backgroundColor=c0aede,b6e3f4,ffdfbf' },
+                    { username: 'Kofi', country: 'Côte d\'Ivoire', emoji: 'https://flagcdn.com/w40/ci.png', avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Kofi&backgroundColor=c0aede,b6e3f4,ffdfbf' }
+                ];
+                foundUser = mockUsers.find(u => u.username.toLowerCase() === username.toLowerCase());
+                await new Promise(r => setTimeout(r, 800)); // Simule le temps de réseau
+            } else {
+                foundUser = await this.findUserByUsername(username);
+            }
+
+            if (foundUser) {
+                // Remplir et afficher la popup de compte existant
+                document.getElementById('af-username-text').textContent = foundUser.username;
+                document.getElementById('af-avatar').src = foundUser.avatar || `https://api.dicebear.com/7.x/bottts/png?seed=${foundUser.username}&backgroundColor=c0aede,b6e3f4,ffdfbf`;
+                document.getElementById('af-country').textContent = foundUser.country;
+
+                // Sécurité pour bien afficher le drapeau du joueur retrouvé
+                const flagSrc = (foundUser.emoji && foundUser.emoji.startsWith('http')) ? foundUser.emoji : appState.user.countryFlag;
+                document.getElementById('af-flag').src = flagSrc;
+
+                this.pendingAccount = foundUser; // On sauvegarde le compte trouvé en attente
+
+                document.getElementById('modal-account-found').classList.remove('hidden');
+
+                // Restaure le bouton
                 btn.innerHTML = 'JOUER';
                 btn.disabled = false;
                 btn.classList.remove('opacity-70', 'cursor-not-allowed');
+                return; // On stoppe le processus de création de compte
+            }
+        } catch (err) {
+            console.error("Erreur de vérification ignorée pour ne pas bloquer le jeu :", err);
+        }
 
-                appState.user.username = username;
-                
-                // --- CORRECTION MAJEURE : Utilisation de PNG au lieu de SVG pour html2canvas ---
-                const seed = encodeURIComponent(username);
-                appState.user.avatarUrl = `https://api.dicebear.com/7.x/bottts/png?seed=${seed}&backgroundColor=c0aede,b6e3f4,ffdfbf`;
+        // Restauration du bouton si le pseudo est libre (NOUVEAU COMPTE)
+        btn.innerHTML = 'JOUER';
+        btn.disabled = false;
+        btn.classList.remove('opacity-70', 'cursor-not-allowed');
 
-                // Sauvegarder la session dans le cache pour 1h avec 0 tentative initiale
-                localStorage.setItem('cog_user_session', JSON.stringify({
-                    user: appState.user,
-                    timestamp: new Date().getTime(),
-                    attempts: 0
-                }));
+        appState.user.username = username;
 
-                // Création de l'utilisateur dans la base de données de manière silencieuse (Score 0)
-                this.submitScoreToSheet(0);
+        // --- CORRECTION MAJEURE : Utilisation de PNG au lieu de SVG pour html2canvas ---
+        const seed = encodeURIComponent(username);
+        appState.user.avatarUrl = `https://api.dicebear.com/7.x/bottts/png?seed=${seed}&backgroundColor=c0aede,b6e3f4,ffdfbf`;
 
-                this.updateDashboardUI();
-                this.switchView('view-dashboard');
-                document.getElementById('bottom-nav').classList.remove('hidden');
-                document.getElementById('bottom-nav').classList.add('flex');
-            },
+        // Sauvegarder la session dans le cache pour 1h avec 0 tentative initiale
+        this.saveSession({
+            user: appState.user,
+            timestamp: new Date().getTime(),
+            attempts: 0
+        });
 
-            // --- NOUVELLES FONCTIONS POUR CONFIRMER/ANNULER UN COMPTE EXISTANT ---
-            confirmAccountFound() {
-                document.getElementById('modal-account-found').classList.add('hidden');
-                
-                // On restaure les données de l'utilisateur depuis la BD
-                appState.user.username = this.pendingAccount.username;
-                appState.user.countryName = this.pendingAccount.country;
-                // Forcer le format PNG si l'ancienne URL était un SVG dans la BD
-                let userAvatar = this.pendingAccount.avatar || `https://api.dicebear.com/7.x/bottts/png?seed=${this.pendingAccount.username}&backgroundColor=c0aede,b6e3f4,ffdfbf`;
-                appState.user.avatarUrl = userAvatar.replace('/svg?', '/png?');
-                appState.user.countryFlag = (this.pendingAccount.emoji && this.pendingAccount.emoji.startsWith('http')) 
-                    ? this.pendingAccount.emoji 
-                    : `https://flagcdn.com/w40/${COUNTRIES.find(c => c.name === this.pendingAccount.country)?.id || 'fr'}.png`;
+        // Création de l'utilisateur dans la base de données de manière silencieuse (Score 0)
+        this.submitScoreToSheet(0);
 
-                // Sauvegarder la session dans le cache pour 1h avec 0 tentative initiale (relance le chrono)
-                localStorage.setItem('cog_user_session', JSON.stringify({
-                    user: appState.user,
-                    timestamp: new Date().getTime(),
-                    attempts: 0
-                }));
+        this.updateDashboardUI();
+        this.switchView('view-dashboard');
+        document.getElementById('bottom-nav').classList.remove('hidden');
+        document.getElementById('bottom-nav').classList.add('flex');
+    },
 
-                this.updateDashboardUI();
-                this.switchView('view-dashboard');
-                document.getElementById('bottom-nav').classList.remove('hidden');
-                document.getElementById('bottom-nav').classList.add('flex');
-            },
+    // --- NOUVELLES FONCTIONS POUR CONFIRMER/ANNULER UN COMPTE EXISTANT ---
+    confirmAccountFound() {
+        document.getElementById('modal-account-found').classList.add('hidden');
 
-            cancelAccountFound() {
-                document.getElementById('modal-account-found').classList.add('hidden');
-                this.pendingAccount = null;
-                // L'utilisateur reste sur la page de login pour modifier son pseudo car c'est un autre joueur
-            },
+        // On restaure les données de l'utilisateur depuis la BD
+        appState.user.username = this.pendingAccount.username;
+        appState.user.countryName = this.pendingAccount.country;
+        // Forcer le format PNG si l'ancienne URL était un SVG dans la BD
+        let userAvatar = this.pendingAccount.avatar || `https://api.dicebear.com/7.x/bottts/png?seed=${this.pendingAccount.username}&backgroundColor=c0aede,b6e3f4,ffdfbf`;
+        appState.user.avatarUrl = userAvatar.replace('/svg?', '/png?');
+        appState.user.countryFlag = (this.pendingAccount.emoji && this.pendingAccount.emoji.startsWith('http'))
+            ? this.pendingAccount.emoji
+            : `https://flagcdn.com/w40/${COUNTRIES.find(c => c.name === this.pendingAccount.country)?.id || 'fr'}.png`;
 
-            switchView(viewId) {
-                ['view-login', 'view-dashboard', 'view-game', 'view-result'].forEach(v => {
-                    document.getElementById(v).classList.add('hidden');
-                });
-                document.getElementById(viewId).classList.remove('hidden');
-                this.syncFooterLayout();
-            },
+        // Sauvegarder la session dans le cache pour 1h avec 0 tentative initiale (relance le chrono)
+        this.saveSession({
+            user: appState.user,
+            timestamp: new Date().getTime(),
+            attempts: 0
+        });
 
-            // Empile le footer en bas et la nav d'actions juste au-dessus, sans être poussés par les vues
-            syncFooterLayout() {
-                const footer = document.getElementById('global-footer');
-                const bottomNav = document.getElementById('bottom-nav');
-                if (!footer || !bottomNav) return;
+        this.updateDashboardUI();
+        this.switchView('view-dashboard');
+        document.getElementById('bottom-nav').classList.remove('hidden');
+        document.getElementById('bottom-nav').classList.add('flex');
+    },
 
-                const cssSafeAreaBottom = parseFloat(
-                    getComputedStyle(document.documentElement).getPropertyValue('--safe-area-bottom')
-                ) || 0;
-                const vv = window.visualViewport;
-                const visualViewportInsetBottom = vv
-                    ? Math.max(0, window.innerHeight - (vv.height + vv.offsetTop))
-                    : 0;
-                const safeAreaBottom = Math.max(cssSafeAreaBottom, visualViewportInsetBottom);
+    cancelAccountFound() {
+        document.getElementById('modal-account-found').classList.add('hidden');
+        this.pendingAccount = null;
+        // L'utilisateur reste sur la page de login pour modifier son pseudo car c'est un autre joueur
+    },
 
-                const navVisible = !bottomNav.classList.contains('hidden');
-                const footerHeight = footer.offsetHeight || 46;
-                const navHeight = navVisible ? (bottomNav.offsetHeight || 64) : 0;
+    switchView(viewId) {
+        ['view-login', 'view-dashboard', 'view-game', 'view-result'].forEach(v => {
+            document.getElementById(v).classList.add('hidden');
+        });
+        document.getElementById(viewId).classList.remove('hidden');
+        this.syncFooterLayout();
+    },
 
-                // Footer toujours en bas du conteneur
-                footer.style.position = 'absolute';
-                footer.style.left = '0';
-                footer.style.right = '0';
-                footer.style.bottom = `${safeAreaBottom}px`;
-                footer.style.zIndex = '30';
+    // Empile le footer en bas et la nav d'actions juste au-dessus, sans être poussés par les vues
+    syncFooterLayout() {
+        const footer = document.getElementById('global-footer');
+        const bottomNav = document.getElementById('bottom-nav');
+        if (!footer || !bottomNav) return;
 
-                // Navigation d'actions juste au-dessus du footer
-                bottomNav.style.position = 'absolute';
-                bottomNav.style.left = '0';
-                bottomNav.style.right = '0';
-                bottomNav.style.bottom = `${footerHeight + safeAreaBottom}px`;
-                bottomNav.style.zIndex = '40';
+        const cssSafeAreaBottom = parseFloat(
+            getComputedStyle(document.documentElement).getPropertyValue('--safe-area-bottom')
+        ) || 0;
+        const vv = window.visualViewport;
+        const visualViewportInsetBottom = vv
+            ? Math.max(0, window.innerHeight - (vv.height + vv.offsetTop))
+            : 0;
+        const safeAreaBottom = Math.max(cssSafeAreaBottom, visualViewportInsetBottom);
 
-                // Laisse de l'espace en bas des vues pour que le contenu reste lisible en scroll
-                const bottomSpace = footerHeight + navHeight + safeAreaBottom + 10;
-                ['view-login', 'view-dashboard', 'view-game', 'view-result'].forEach(id => {
-                    const view = document.getElementById(id);
-                    if (view) view.style.paddingBottom = `${bottomSpace}px`;
-                });
-            },
+        const navVisible = !bottomNav.classList.contains('hidden');
+        const footerHeight = footer.offsetHeight || 46;
+        const navHeight = navVisible ? (bottomNav.offsetHeight || 64) : 0;
 
-            startBgm() {
-                const bgMusic = document.getElementById('bg-music');
-                if (!bgMusic || !appState.audioEnabled || !bgMusic.paused) return;
+        // Footer toujours en bas du conteneur
+        footer.style.position = 'absolute';
+        footer.style.left = '0';
+        footer.style.right = '0';
+        footer.style.bottom = `${safeAreaBottom}px`;
+        footer.style.zIndex = '30';
 
-                const playPromise = bgMusic.play();
-                if (playPromise && typeof playPromise.catch === 'function') {
-                    playPromise.catch(() => {
-                        // On garde les listeners d'unlock actifs, prochaine interaction retentera.
-                    });
-                }
-            },
+        // Navigation d'actions juste au-dessus du footer
+        bottomNav.style.position = 'absolute';
+        bottomNav.style.left = '0';
+        bottomNav.style.right = '0';
+        bottomNav.style.bottom = `${footerHeight + safeAreaBottom}px`;
+        bottomNav.style.zIndex = '40';
 
-            startGame(category) {
-                initAudio(); // Initialize audio context on first user interaction (game start)
-                
-                // --- VÉRIFICATION DE LA LIMITE DE TENTATIVES (CACHE) ---
-                const cachedData = localStorage.getItem('cog_user_session');
-                if (cachedData) {
-                    let session = JSON.parse(cachedData);
-                    
-                    // Si le joueur a déjà 2 tentatives ou plus, on le bloque
-                    if (session.attempts >= 2) {
-                        document.getElementById('modal-limit').classList.remove('hidden');
-                        lucide.createIcons(); // Assure l'affichage de l'icône timer-off
-                        return; // Stoppe le lancement du jeu
-                    }
+        // Laisse de l'espace en bas des vues pour que le contenu reste lisible en scroll
+        const bottomSpace = footerHeight + navHeight + safeAreaBottom + 10;
+        ['view-login', 'view-dashboard', 'view-game', 'view-result'].forEach(id => {
+            const view = document.getElementById(id);
+            if (view) view.style.paddingBottom = `${bottomSpace}px`;
+        });
+    },
 
-                    // Sinon, on incrémente sa tentative et on met à jour le cache
-                    session.attempts += 1;
-                    localStorage.setItem('cog_user_session', JSON.stringify(session));
-                } else {
-                    // Sécurité : S'il n'y a plus de cache du tout, on renvoie au login
-                    this.switchView('view-login');
-                    return;
-                }
-                // -------------------------------------------------------
+    startBgm() {
+        const bgMusic = document.getElementById('bg-music');
+        if (!bgMusic || !appState.audioEnabled || !bgMusic.paused) return;
 
-                // Préparation des questions
-                appState.currentQuestions = [...QUESTIONS[category]].sort(() => Math.random() - 0.5);
-                appState.qIndex = 0;
-                appState.score = 0;
-                appState.timeLeft = 90;
+        const playPromise = bgMusic.play();
+        if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => {
+                // On garde les listeners d'unlock actifs, prochaine interaction retentera.
+            });
+        }
+    },
 
-                document.getElementById('game-score').textContent = "0";
-                
-                this.switchView('view-game');
-                document.getElementById('bottom-nav').classList.add('hidden'); // Cacher la nav en jeu
-                
-                this.renderQuestion();
-                this.startTimer();
-            },
+    async startGame(category) {
+        initAudio(); // Initialize audio context on first user interaction (game start)
+        this.showPreparingModal(category);
 
-            startTimer() {
-                clearInterval(appState.timerInterval);
-                const bar = document.getElementById('timer-bar');
-                const text = document.getElementById('timer-text');
-                
-                appState.timerInterval = setInterval(() => {
-                    appState.timeLeft--;
-                    
-                    // Update UI
-                    const percentage = (appState.timeLeft / 90) * 100;
-                    bar.style.width = `${percentage}%`;
-                    
-                    // Format MM:SS
-                    const m = Math.floor(appState.timeLeft / 60);
-                    const s = appState.timeLeft % 60;
-                    text.textContent = `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+        // --- VÉRIFICATION DE LA LIMITE DE TENTATIVES (CACHE) ---
+        const session = this.getValidSession();
+        if (!session) {
+            // Sécurité : S'il n'y a plus de cache du tout, on renvoie au login
+            await this.hidePreparingModal();
+            this.switchView('view-login');
+            return;
+        }
 
-                    // Color change
-                    if(appState.timeLeft < 15) bar.className = "bg-glg-red h-full transition-all duration-1000";
-                    else if(appState.timeLeft < 45) bar.className = "bg-glg-yellow h-full transition-all duration-1000";
-                    else bar.className = "bg-glg-green h-full transition-all duration-1000";
+        // Si le joueur a déjà atteint le quota local dans la fenêtre de 1h, on le bloque
+        if (session.attempts >= MAX_ATTEMPTS_PER_SESSION) {
+            this.setLimitModalMessage(
+                'Vous avez déjà atteint la limite de <span class="text-glg-red text-lg">2 tentatives</span> autorisées.<br><br>Veuillez revenir dans 1 heure pour retenter votre chance !'
+            );
+            await this.hidePreparingModal();
+            document.getElementById('modal-limit').classList.remove('hidden');
+            lucide.createIcons(); // Assure l'affichage de l'icône timer-off
+            return; // Stoppe le lancement du jeu
+        }
 
-                    if (appState.timeLeft <= 0) {
-                        this.endGame();
-                    }
-                }, 1000);
-            },
+        try {
+            const serverAttempt = await this.reserveAttemptOnServer(appState.user.username);
 
-            renderQuestion() {
-                if (appState.qIndex >= appState.currentQuestions.length) {
-                    return this.endGame();
-                }
+            if (!serverAttempt.allowed) {
+                session.attempts = MAX_ATTEMPTS_PER_SESSION;
+                this.saveSession(session);
+                this.setLimitModalMessage(
+                    'Le serveur confirme que ce pseudo a déjà utilisé ses <span class="text-glg-red text-lg">2 tentatives</span> sur la fenêtre en cours.<br><br>Veuillez patienter avant de rejouer.',
+                    'Quota Serveur Atteint'
+                );
+                await this.hidePreparingModal();
+                document.getElementById('modal-limit').classList.remove('hidden');
+                lucide.createIcons();
+                return;
+            }
 
-                const qData = appState.currentQuestions[appState.qIndex];
-                document.getElementById('q-counter').textContent = `Question ${appState.qIndex + 1}/10`;
-                document.getElementById('question-text').textContent = qData.q;
+            session.attempts = Number.isInteger(serverAttempt.attemptsUsed)
+                ? serverAttempt.attemptsUsed
+                : session.attempts + 1;
+            this.saveSession(session);
+        } catch (err) {
+            console.error('Validation serveur impossible :', err);
+            this.setLimitModalMessage(
+                'Le contrôle serveur des tentatives est momentanément indisponible.<br><br>Réessayez dans quelques secondes pour éviter un démarrage non synchronisé.',
+                'Validation Indisponible'
+            );
+            await this.hidePreparingModal();
+            document.getElementById('modal-limit').classList.remove('hidden');
+            lucide.createIcons();
+            return;
+        }
+        // -------------------------------------------------------
 
-                // Shuffle options
-                const options = [...qData.options].sort(() => Math.random() - 0.5);
-                
-                const grid = document.getElementById('answers-grid');
-                grid.innerHTML = options.map(opt => `
+        // Préparation des questions
+        appState.currentQuestions = [...QUESTIONS[category]].sort(() => Math.random() - 0.5);
+        appState.qIndex = 0;
+        appState.score = 0;
+        appState.timeLeft = 90;
+
+        document.getElementById('game-score').textContent = "0";
+
+        await this.hidePreparingModal();
+        this.switchView('view-game');
+        document.getElementById('bottom-nav').classList.add('hidden'); // Cacher la nav en jeu
+
+        this.renderQuestion();
+        this.startTimer();
+    },
+
+    startTimer() {
+        clearInterval(appState.timerInterval);
+        const bar = document.getElementById('timer-bar');
+        const text = document.getElementById('timer-text');
+
+        appState.timerInterval = setInterval(() => {
+            appState.timeLeft--;
+
+            // Update UI
+            const percentage = (appState.timeLeft / 90) * 100;
+            bar.style.width = `${percentage}%`;
+
+            // Format MM:SS
+            const m = Math.floor(appState.timeLeft / 60);
+            const s = appState.timeLeft % 60;
+            text.textContent = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+
+            // Color change
+            if (appState.timeLeft < 15) bar.className = "bg-glg-red h-full transition-all duration-1000";
+            else if (appState.timeLeft < 45) bar.className = "bg-glg-yellow h-full transition-all duration-1000";
+            else bar.className = "bg-glg-green h-full transition-all duration-1000";
+
+            if (appState.timeLeft <= 0) {
+                this.endGame();
+            }
+        }, 1000);
+    },
+
+    renderQuestion() {
+        if (appState.qIndex >= appState.currentQuestions.length) {
+            return this.endGame();
+        }
+
+        const qData = appState.currentQuestions[appState.qIndex];
+        document.getElementById('q-counter').textContent = `Question ${appState.qIndex + 1}/10`;
+        document.getElementById('question-text').textContent = qData.q;
+
+        // Shuffle options
+        const options = [...qData.options].sort(() => Math.random() - 0.5);
+
+        const grid = document.getElementById('answers-grid');
+        grid.innerHTML = options.map(opt => `
                     <button onclick="app.checkAnswer('${opt.replace(/'/g, "\\'")}')" class="wood-btn w-full p-4 text-left font-semibold text-lg hover:bg-wood-light active:bg-wood-base transition-colors">
                         ${opt}
                     </button>
                 `).join('');
-            },
+    },
 
-            checkAnswer(selected) {
-                const correct = appState.currentQuestions[appState.qIndex].a;
-                if (selected === correct) {
-                    appState.score++;
-                    document.getElementById('game-score').textContent = appState.score;
-                    playSound('success');
-                } else {
-                    playSound('fail');
-                }
-                
-                appState.qIndex++;
-                setTimeout(() => this.renderQuestion(), 200); // Petit délai pour fluidité
-            },
+    checkAnswer(selected) {
+        const correct = appState.currentQuestions[appState.qIndex].a;
+        if (selected === correct) {
+            appState.score++;
+            document.getElementById('game-score').textContent = appState.score;
+            playSound('success');
+        } else {
+            playSound('fail');
+        }
 
-            endGame() {
-                clearInterval(appState.timerInterval);
-                
-                // Setup Result View
-                document.getElementById('res-avatar').src = appState.user.avatarUrl;
-                document.getElementById('res-username').textContent = appState.user.username;
-                document.getElementById('res-country').textContent = appState.user.countryName;
-                document.getElementById('res-flag').src = appState.user.countryFlag;
-                document.getElementById('res-flag').classList.remove('hidden');
-                document.getElementById('res-score').textContent = `${appState.score}/10`;
-                
-                if (appState.score >= 5) {
-                    playSound('win');
-                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                } else {
-                    playSound('lose');
-                }
+        appState.qIndex++;
+        setTimeout(() => this.renderQuestion(), 200); // Petit délai pour fluidité
+    },
 
-                appState.hasPlayed = true;
-                this.switchView('view-result');
-                document.getElementById('bottom-nav').classList.remove('hidden');
-                lucide.createIcons(); // Force le rendu des nouvelles icônes au cas où
-                setTimeout(() => this.scaleCard(), 60); // Adapte la taille de la carte pour mobile
-                
-                this.submitScoreToSheet(); // Met à jour le score réel (Update) en arrière-plan
-            },
+    endGame() {
+        clearInterval(appState.timerInterval);
 
-            submitScoreToSheet(overrideScore = null) {
-                if(!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL === "VOTRE_URL_WEB_APP_ICI") {
-                    console.log("Sheet URL non configurée. Transaction ignorée.");
-                    return;
-                }
+        // Setup Result View
+        document.getElementById('res-avatar').src = appState.user.avatarUrl;
+        document.getElementById('res-username').textContent = appState.user.username;
+        document.getElementById('res-country').textContent = appState.user.countryName;
+        document.getElementById('res-flag').src = appState.user.countryFlag;
+        document.getElementById('res-flag').classList.remove('hidden');
+        document.getElementById('res-score').textContent = `${appState.score}/10`;
 
-                const finalScore = overrideScore !== null ? overrideScore : appState.score;
-                const isSilent = overrideScore === 0;
+        if (appState.score >= 5) {
+            playSound('win');
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        } else {
+            playSound('lose');
+        }
 
-                if (!isSilent) {
-                    document.getElementById('submit-loader').classList.remove('hidden');
-                }
-                
-                const data = {
-                    username: appState.user.username,
-                    country: appState.user.countryName,
-                    emoji: appState.user.countryFlag,
-                    avatar: appState.user.avatarUrl,
-                    score: finalScore
-                };
+        appState.hasPlayed = true;
+        this.switchView('view-result');
+        document.getElementById('bottom-nav').classList.remove('hidden');
+        lucide.createIcons(); // Force le rendu des nouvelles icônes au cas où
+        setTimeout(() => this.scaleCard(), 60); // Adapte la taille de la carte pour mobile
 
-                fetch(GOOGLE_SHEET_URL, {
+        this.submitScoreToSheet(); // Met à jour le score réel (Update) en arrière-plan
+    },
+
+    submitScoreToSheet(overrideScore = null) {
+        if (!this.isBackendConfigured()) {
+            console.log("Sheet URL non configurée. Transaction ignorée.");
+            return;
+        }
+
+        const finalScore = overrideScore !== null ? overrideScore : appState.score;
+        const isSilent = overrideScore === 0;
+
+        if (!isSilent) {
+            document.getElementById('submit-loader').classList.remove('hidden');
+        }
+
+        const data = {
+            username: appState.user.username,
+            country: appState.user.countryName,
+            emoji: appState.user.countryFlag,
+            avatar: appState.user.avatarUrl,
+            score: finalScore
+        };
+
+        this.fetchBackendJson({ action: 'upsert', ...data })
+            .catch(err => {
+                console.warn('Fallback POST no-cors utilisé pour la synchro score :', err);
+                return fetch(GOOGLE_SHEET_URL, {
                     method: 'POST',
-                    mode: 'no-cors', // Requis pour éviter les erreurs CORS simples avec GAS si non config
-                    headers: { 'Content-Type': 'application/json' },
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(data)
-                }).then(() => {
-                    if (!isSilent) {
-                        setTimeout(() => {
-                            document.getElementById('submit-loader').classList.add('hidden');
-                        }, 1000);
-                    }
-                }).catch(err => {
-                    console.error("Erreur DB :", err);
-                    if (!isSilent) {
-                        document.getElementById('submit-loader').classList.add('hidden');
-                    }
                 });
-            },
-
-            showDashboard() {
-                this.switchView('view-dashboard');
-            },
-
-            // Scale la carte selon l'espace disponible (mobile/desktop)
-            scaleCard() {
-                const card = document.getElementById('shareable-card');
-                const wrapper = document.querySelector('.card-scale-wrapper');
-                if (!card || !wrapper) return;
-                const available = wrapper.clientWidth;
-                const scale = Math.min(1, (available - 8) / CARD_EXPORT_WIDTH);
-                card.style.transform = `scale(${scale})`;
-                wrapper.style.height = `${Math.round(CARD_EXPORT_HEIGHT * scale)}px`;
-            },
-
-            // --- UI ACTIONS ---
-            toggleAudio() {
-                appState.audioEnabled = !appState.audioEnabled;
-                const bgMusic = document.getElementById('bg-music');
-                
-                if(appState.audioEnabled) {
-                    document.getElementById('icon-audio-on').classList.remove('hidden');
-                    document.getElementById('icon-audio-off').classList.add('hidden');
-                    this.startBgm(); // Relance la musique de fond
-                } else {
-                    document.getElementById('icon-audio-on').classList.add('hidden');
-                    document.getElementById('icon-audio-off').classList.remove('hidden');
-                    bgMusic.pause(); // Coupe la musique de fond
-                }
-            },
-
-            showRules() {
-                document.getElementById('modal-rules').classList.remove('hidden');
-            },
-
-            showLeaderboard() {
-                document.getElementById('modal-leaderboard').classList.remove('hidden');
-                // Afficher le bouton téléchargement dès que l'utilisateur est connecté
-                const dlBtn = document.getElementById('lb-download-btn');
-                if (dlBtn) {
-                    dlBtn.style.display = appState.user.username ? 'flex' : 'none';
-                    if (appState.user.username) lucide.createIcons();
-                }
-                this.fetchLeaderboard();
-            },
-
-            closeModals() {
-                document.getElementById('modal-rules').classList.add('hidden');
-                document.getElementById('modal-leaderboard').classList.add('hidden');
-            },
-
-            fetchLeaderboard() {
-                const list = document.getElementById('lb-list');
-                const loader = document.getElementById('lb-loader');
-                
-                list.classList.add('hidden');
-                loader.classList.remove('hidden');
-
-                // Utilisation d'une condition générique pour les Mocks
-                if(!GOOGLE_SHEET_URL || GOOGLE_SHEET_URL === "VOTRE_URL_WEB_APP_ICI" || GOOGLE_SHEET_URL.includes("VOTRE_URL")) {
-                    // Mock data si non configuré (ajout de joueurs pour bien voir le podium + la liste)
+            })
+            .then(() => {
+                if (!isSilent) {
                     setTimeout(() => {
-                        this.renderLeaderboard([
-                            { username: appState.user.username || 'Toi', country: appState.user.countryName || 'France', emoji: appState.user.countryFlag || 'https://flagcdn.com/w40/fr.png', score: appState.score || 10, avatar: appState.user.avatarUrl || 'https://api.dicebear.com/7.x/bottts/png?seed=Toi' },
-                            { username: 'Marie', country: 'Canada', emoji: 'https://flagcdn.com/w40/ca.png', score: 9, avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Marie&backgroundColor=c0aede,b6e3f4,ffdfbf' },
-                            { username: 'Kofi', country: 'Côte d\'Ivoire', emoji: 'https://flagcdn.com/w40/ci.png', score: 8, avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Kofi&backgroundColor=c0aede,b6e3f4,ffdfbf' },
-                            { username: 'Amina', country: 'Sénégal', emoji: 'https://flagcdn.com/w40/sn.png', score: 7, avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Amina&backgroundColor=c0aede,b6e3f4,ffdfbf' },
-                            { username: 'Jean', country: 'Suisse', emoji: 'https://flagcdn.com/w40/ch.png', score: 5, avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Jean&backgroundColor=c0aede,b6e3f4,ffdfbf' }
-                        ].sort((a,b) => b.score - a.score));
+                        document.getElementById('submit-loader').classList.add('hidden');
                     }, 1000);
-                    return;
                 }
+            })
+            .catch(err => {
+                console.error("Erreur DB :", err);
+                if (!isSilent) {
+                    document.getElementById('submit-loader').classList.add('hidden');
+                }
+            });
+    },
 
-                // Vrai fetch (Assurez-vous que le GAS Web App accepte les GET et retourne JSON)
-                fetch(GOOGLE_SHEET_URL)
-                    .then(res => res.json())
-                    .then(data => {
-                        this.renderLeaderboard(data);
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        loader.classList.add('hidden');
-                        list.innerHTML = "<p class='text-center text-red-800 font-bold'>Erreur de chargement.</p>";
-                        list.classList.remove('hidden');
-                    });
-            },
+    showDashboard() {
+        this.switchView('view-dashboard');
+    },
 
-            renderLeaderboard(data) {
-                this.leaderboardData = data; // Sauvegarder pour le téléchargement depuis le leaderboard
-                const list = document.getElementById('lb-list');
-                const loader = document.getElementById('lb-loader');
-                
+    // Scale la carte selon l'espace disponible (mobile/desktop)
+    scaleCard() {
+        const card = document.getElementById('shareable-card');
+        const wrapper = document.querySelector('.card-scale-wrapper');
+        if (!card || !wrapper) return;
+        const available = wrapper.clientWidth;
+        const scale = Math.min(1, (available - 8) / CARD_EXPORT_WIDTH);
+        card.style.transform = `scale(${scale})`;
+        wrapper.style.height = `${Math.round(CARD_EXPORT_HEIGHT * scale)}px`;
+    },
+
+    // --- UI ACTIONS ---
+    toggleAudio() {
+        appState.audioEnabled = !appState.audioEnabled;
+        const bgMusic = document.getElementById('bg-music');
+
+        if (appState.audioEnabled) {
+            document.getElementById('icon-audio-on').classList.remove('hidden');
+            document.getElementById('icon-audio-off').classList.add('hidden');
+            this.startBgm(); // Relance la musique de fond
+        } else {
+            document.getElementById('icon-audio-on').classList.add('hidden');
+            document.getElementById('icon-audio-off').classList.remove('hidden');
+            bgMusic.pause(); // Coupe la musique de fond
+        }
+    },
+
+    showRules() {
+        document.getElementById('modal-rules').classList.remove('hidden');
+    },
+
+    showLeaderboard() {
+        document.getElementById('modal-leaderboard').classList.remove('hidden');
+        // Afficher le bouton téléchargement dès que l'utilisateur est connecté
+        const dlBtn = document.getElementById('lb-download-btn');
+        if (dlBtn) {
+            dlBtn.style.display = appState.user.username ? 'flex' : 'none';
+            if (appState.user.username) lucide.createIcons();
+        }
+        this.fetchLeaderboard();
+    },
+
+    closeModals() {
+        document.getElementById('modal-rules').classList.add('hidden');
+        document.getElementById('modal-leaderboard').classList.add('hidden');
+    },
+
+    fetchLeaderboard() {
+        const list = document.getElementById('lb-list');
+        const loader = document.getElementById('lb-loader');
+
+        list.classList.add('hidden');
+        loader.classList.remove('hidden');
+
+        // Utilisation d'une condition générique pour les Mocks
+        if (!this.isBackendConfigured()) {
+            // Mock data si non configuré (ajout de joueurs pour bien voir le podium + la liste)
+            setTimeout(() => {
+                this.renderLeaderboard([
+                    { username: appState.user.username || 'Toi', country: appState.user.countryName || 'France', emoji: appState.user.countryFlag || 'https://flagcdn.com/w40/fr.png', score: appState.score || 10, avatar: appState.user.avatarUrl || 'https://api.dicebear.com/7.x/bottts/png?seed=Toi' },
+                    { username: 'Marie', country: 'Canada', emoji: 'https://flagcdn.com/w40/ca.png', score: 9, avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Marie&backgroundColor=c0aede,b6e3f4,ffdfbf' },
+                    { username: 'Kofi', country: 'Côte d\'Ivoire', emoji: 'https://flagcdn.com/w40/ci.png', score: 8, avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Kofi&backgroundColor=c0aede,b6e3f4,ffdfbf' },
+                    { username: 'Amina', country: 'Sénégal', emoji: 'https://flagcdn.com/w40/sn.png', score: 7, avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Amina&backgroundColor=c0aede,b6e3f4,ffdfbf' },
+                    { username: 'Jean', country: 'Suisse', emoji: 'https://flagcdn.com/w40/ch.png', score: 5, avatar: 'https://api.dicebear.com/7.x/bottts/png?seed=Jean&backgroundColor=c0aede,b6e3f4,ffdfbf' }
+                ].sort((a, b) => b.score - a.score));
+            }, 1000);
+            return;
+        }
+
+        // Vrai fetch (Assurez-vous que le GAS Web App accepte les GET et retourne JSON)
+        this.fetchBackendJson({ action: 'leaderboard' })
+            .then(data => {
+                this.renderLeaderboard(Array.isArray(data) ? data : (data?.data || []));
+            })
+            .catch(err => {
+                console.error(err);
                 loader.classList.add('hidden');
+                list.innerHTML = "<p class='text-center text-red-800 font-bold'>Erreur de chargement.</p>";
                 list.classList.remove('hidden');
+            });
+    },
 
-                if(!data || data.length === 0) {
-                    list.innerHTML = "<p class='text-center font-bold'>Aucun score pour le moment.</p>";
-                    return;
-                }
+    renderLeaderboard(data) {
+        this.leaderboardData = data; // Sauvegarder pour le téléchargement depuis le leaderboard
+        const list = document.getElementById('lb-list');
+        const loader = document.getElementById('lb-loader');
 
-                let html = '';
-                
-                // Petit helper pour afficher le drapeau proprement (avec class 'block' pour éviter les marges invisibles)
-                const getFlag = (user) => user && user.emoji && user.emoji.startsWith('http') 
-                    ? `<img src="${user.emoji}" alt="flag" class="w-4 h-3 sm:w-5 sm:h-3.5 rounded-[2px] shadow-sm object-cover block">` 
-                    : `<span class="text-[10px] leading-none">${user?.emoji || ''}</span>`;
+        loader.classList.add('hidden');
+        list.classList.remove('hidden');
 
-                // --- 🏆 PODIUM (Top 3) ---
-                if (data.length > 0) {
-                    const p1 = data[0];
-                    const p2 = data[1];
-                    const p3 = data[2];
+        if (!data || data.length === 0) {
+            list.innerHTML = "<p class='text-center font-bold'>Aucun score pour le moment.</p>";
+            return;
+        }
 
-                    html += `<div class="flex justify-center items-end gap-2 sm:gap-4 mb-6 mt-8 pt-2 pb-4 border-b-4 border-wood-border/20 px-2">`;
+        let html = '';
 
-                    // Marche 2 (Argent - À gauche)
-                    if (p2) {
-                        html += `
+        // Petit helper pour afficher le drapeau proprement (avec class 'block' pour éviter les marges invisibles)
+        const getFlag = (user) => user && user.emoji && user.emoji.startsWith('http')
+            ? `<img src="${user.emoji}" alt="flag" class="w-4 h-3 sm:w-5 sm:h-3.5 rounded-[2px] shadow-sm object-cover block">`
+            : `<span class="text-[10px] leading-none">${user?.emoji || ''}</span>`;
+
+        // --- 🏆 PODIUM (Top 3) ---
+        if (data.length > 0) {
+            const p1 = data[0];
+            const p2 = data[1];
+            const p3 = data[2];
+
+            html += `<div class="flex justify-center items-end gap-2 sm:gap-4 mb-6 mt-8 pt-2 pb-4 border-b-4 border-wood-border/20 px-2">`;
+
+            // Marche 2 (Argent - À gauche)
+            if (p2) {
+                html += `
                         <div class="flex flex-col items-center w-1/3 max-w-[110px] transform translate-y-2 fade-in" style="animation-delay: 0.1s;">
                             <!-- Espace pour aligner avec la couronne du 1er -->
                             <div class="mt-4"></div>
@@ -792,11 +988,11 @@
                                 <span class="font-black text-xl text-gray-700 drop-shadow-sm">${p2.score}</span>
                             </div>
                         </div>`;
-                    }
+            }
 
-                    // Marche 1 (Or - Au centre)
-                    if (p1) {
-                        html += `
+            // Marche 1 (Or - Au centre)
+            if (p1) {
+                html += `
                         <div class="flex flex-col items-center w-1/3 max-w-[130px] z-20 fade-in">
                             <i data-lucide="crown" class="w-8 h-8 sm:w-10 sm:h-10 text-glg-yellow fill-glg-yellow mb-1 drop-shadow-md animate-bounce"></i>
                             
@@ -818,11 +1014,11 @@
                                 <span class="font-black text-2xl sm:text-3xl text-yellow-900 drop-shadow-md">${p1.score}</span>
                             </div>
                         </div>`;
-                    }
+            }
 
-                    // Marche 3 (Bronze - À droite)
-                    if (p3) {
-                        html += `
+            // Marche 3 (Bronze - À droite)
+            if (p3) {
+                html += `
                         <div class="flex flex-col items-center w-1/3 max-w-[110px] transform translate-y-6 fade-in" style="animation-delay: 0.2s;">
                             <!-- Espace pour aligner avec la couronne du 1er -->
                             <div class="mt-4"></div>
@@ -845,18 +1041,18 @@
                                 <span class="font-black text-xl text-orange-900 drop-shadow-sm">${p3.score}</span>
                             </div>
                         </div>`;
-                    }
+            }
 
-                    html += `</div>`;
-                }
+            html += `</div>`;
+        }
 
-                // --- 📜 LISTE SUIVANTE (Rang 4 à 20) ---
-                const restData = data.slice(3, 20);
-                if (restData.length > 0) {
-                    html += `<div class="flex flex-col gap-2 px-1 sm:px-4">`;
-                    html += restData.map((user, index) => {
-                        const actualRank = index + 4; // On commence à 4 !
-                        return `
+        // --- 📜 LISTE SUIVANTE (Rang 4 à 20) ---
+        const restData = data.slice(3, 20);
+        if (restData.length > 0) {
+            html += `<div class="flex flex-col gap-2 px-1 sm:px-4">`;
+            html += restData.map((user, index) => {
+                const actualRank = index + 4; // On commence à 4 !
+                return `
                         <div class="flex items-center justify-between p-3 rank-row bg-white/40 border-wood-border hover:bg-white/60 transition-colors fade-in" style="animation-delay: ${0.3 + (index * 0.05)}s">
                             <div class="flex items-center gap-3">
                                 <span class="font-black text-lg text-wood-dark w-6 text-center">${actualRank}</span>
@@ -874,122 +1070,102 @@
                             </div>
                         </div>
                         `;
-                    }).join('');
-                    html += `</div>`;
-                }
+            }).join('');
+            html += `</div>`;
+        }
 
-                list.innerHTML = html;
-                lucide.createIcons(); // On force Lucide à dessiner la Couronne sur le 1er !
-            },
+        list.innerHTML = html;
+        lucide.createIcons(); // On force Lucide à dessiner la Couronne sur le 1er !
+    },
 
-            // Télécharge la carte en utilisant les données du leaderboard pour l'utilisateur connecté
-            downloadCardFromLeaderboard() {
-                const username = appState.user.username;
-                const entry = this.leaderboardData.find(
-                    u => u.username && u.username.replace('@','') === username.replace('@','')
-                );
+    // Télécharge la carte en utilisant les données du leaderboard pour l'utilisateur connecté
+    downloadCardFromLeaderboard() {
+        const username = appState.user.username;
+        const entry = this.leaderboardData.find(
+            u => u.username && u.username.replace('@', '') === username.replace('@', '')
+        );
 
-                // Peupler la carte avec les données du leaderboard (ou appState en fallback)
-                document.getElementById('res-avatar').src = entry ? entry.avatar : appState.user.avatarUrl;
-                document.getElementById('res-username').textContent = username;
-                document.getElementById('res-country').textContent = entry ? entry.country : appState.user.countryName;
-                const flagEl = document.getElementById('res-flag');
-                flagEl.src = entry ? entry.emoji : appState.user.countryFlag;
-                flagEl.classList.remove('hidden');
-                document.getElementById('res-score').textContent = entry ? `${entry.score}/10` : `${appState.score}/10`;
+        // Peupler la carte avec les données du leaderboard (ou appState en fallback)
+        document.getElementById('res-avatar').src = entry ? entry.avatar : appState.user.avatarUrl;
+        document.getElementById('res-username').textContent = username;
+        document.getElementById('res-country').textContent = entry ? entry.country : appState.user.countryName;
+        const flagEl = document.getElementById('res-flag');
+        flagEl.src = entry ? entry.emoji : appState.user.countryFlag;
+        flagEl.classList.remove('hidden');
+        document.getElementById('res-score').textContent = entry ? `${entry.score}/10` : `${appState.score}/10`;
 
-                // view-result est hidden quand on vient du dashboard/leaderboard.
-                // On le place hors-écran le temps de la capture pour que html2canvas puisse le lire.
-                const viewResult = document.getElementById('view-result');
-                const wasHidden = viewResult.classList.contains('hidden');
-                if (wasHidden) {
-                    viewResult.classList.remove('hidden');
-                    viewResult.style.cssText = 'position:fixed;top:-9999px;left:-9999px;z-index:-1;';
-                }
+        // Laisser le DOM se mettre à jour avant de cloner
+        setTimeout(() => this._captureCard(username), 50);
+    },
 
-                const card = document.getElementById('shareable-card');
-                const wrapper = document.querySelector('.card-scale-wrapper');
-                const prevTransform = card.style.transform;
-                const prevWrapperHeight = wrapper ? wrapper.style.height : '';
+    downloadCard() {
+        this._captureCard(appState.user.username);
+    },
 
-                card.style.transform = 'scale(1)';
-                if (wrapper) wrapper.style.height = `${CARD_EXPORT_HEIGHT}px`;
+    // Moteur de capture partagé : clone la carte dans un conteneur temporaire
+    // ancré dans le viewport (opacity:0) pour que html2canvas puisse la lire.
+    // ⚠️ top:-9999px ne fonctionne PAS avec html2canvas — l'élément doit être visible.
+    _captureCard(username) {
+        const sourceCard = document.getElementById('shareable-card');
 
-                const restore = () => {
-                    card.style.transform = prevTransform;
-                    if (wrapper) wrapper.style.height = prevWrapperHeight;
-                    if (wasHidden) {
-                        viewResult.classList.add('hidden');
-                        viewResult.style.cssText = '';
-                    }
-                };
+        // Conteneur temporaire invisible, ancré en haut-gauche du viewport
+        const tempContainer = document.createElement('div');
+        tempContainer.style.cssText = `position:fixed;top:0;left:0;width:${CARD_EXPORT_WIDTH}px;height:${CARD_EXPORT_HEIGHT}px;z-index:9999;opacity:0;pointer-events:none;overflow:visible;`;
 
-                document.fonts.ready.then(() => {
-                    setTimeout(() => {
-                        html2canvas(card, {
-                            backgroundColor: null,
-                            width: CARD_EXPORT_WIDTH,
-                            height: CARD_EXPORT_HEIGHT,
-                            scale: 2,
-                            useCORS: true,
-                            allowTaint: false,
-                            logging: false
-                        }).then(canvas => {
-                            restore();
-                            const link = document.createElement('a');
-                            link.download = `CulturOGuides_${username.replace('@','')}.png`;
-                            link.href = canvas.toDataURL('image/png', 1.0);
-                            link.click();
-                        }).catch(err => {
-                            restore();
-                            alert("Erreur lors de la génération de l'image. Veuillez réessayer.");
-                            console.error(err);
-                        });
-                    }, 150);
-                });
-            },
+        // Clone exact de la carte à sa taille réelle (supprime le scale mobile)
+        const cardClone = sourceCard.cloneNode(true);
+        cardClone.style.transform = 'none';
+        tempContainer.appendChild(cardClone);
+        document.body.appendChild(tempContainer);
 
-            downloadCard() {
-                const card = document.getElementById('shareable-card');
-                const wrapper = document.querySelector('.card-scale-wrapper');
+        // Recharger les images avec CORS explicite sur le clone
+        // (évite le taint canvas Chrome quand l'image était en cache sans CORS)
+        const sourceImgs = Array.from(sourceCard.querySelectorAll('img'));
+        const cloneImgs = Array.from(cardClone.querySelectorAll('img'));
+        sourceImgs.forEach((srcImg, i) => {
+            cloneImgs[i].crossOrigin = 'anonymous';
+            cloneImgs[i].src = '';
+            cloneImgs[i].src = srcImg.src;
+        });
 
-                // Sauvegarder le transform mobile actuel
-                const prevTransform = card.style.transform;
-                const prevWrapperHeight = wrapper ? wrapper.style.height : '';
+        const preloads = cloneImgs.map(img => new Promise(resolve => {
+            if (img.complete && img.naturalWidth > 0) return resolve();
+            img.onload = resolve;
+            img.onerror = resolve;
+        }));
 
-                // Réinitialiser le scale pour capturer à la taille réelle, identique sur tous les appareils
-                card.style.transform = 'scale(1)';
-                if (wrapper) wrapper.style.height = `${CARD_EXPORT_HEIGHT}px`;
-
-                document.fonts.ready.then(() => {
-                    setTimeout(() => {
-                        html2canvas(card, {
-                            backgroundColor: null,
-                            width: CARD_EXPORT_WIDTH,
-                            height: CARD_EXPORT_HEIGHT,
-                            scale: 2,
-                            useCORS: true,
-                            allowTaint: false,
-                            logging: false
-                        }).then(canvas => {
-                            // Restaurer le scale mobile
-                            card.style.transform = prevTransform;
-                            if (wrapper) wrapper.style.height = prevWrapperHeight;
-
-                            const link = document.createElement('a');
-                            link.download = `CulturOGuides_${appState.user.username.replace('@','')}.png`;
-                            link.href = canvas.toDataURL('image/png', 1.0);
-                            link.click();
-                        }).catch(err => {
-                            card.style.transform = prevTransform;
-                            if (wrapper) wrapper.style.height = prevWrapperHeight;
-                            alert("Erreur lors de la génération de l'image. Veuillez réessayer.");
-                            console.error(err);
-                        });
-                    }, 150);
-                });
-            }
+        const cleanup = () => {
+            if (document.body.contains(tempContainer)) document.body.removeChild(tempContainer);
         };
 
-        // Initialisation
-        window.onload = () => app.init();
+        Promise.all(preloads)
+            .then(() => document.fonts.ready)
+            .then(() => new Promise(r => setTimeout(r, 400)))
+            .then(() => html2canvas(cardClone, {
+                backgroundColor: null,
+                width: CARD_EXPORT_WIDTH,
+                height: CARD_EXPORT_HEIGHT,
+                scale: 2,
+                useCORS: true,
+                allowTaint: false,
+                logging: false,
+                scrollX: 0,
+                scrollY: 0
+            }))
+            .then(canvas => {
+                cleanup();
+                const link = document.createElement('a');
+                link.download = `CulturOGuides_${username.replace('@', '')}.png`;
+                link.href = canvas.toDataURL('image/png', 1.0);
+                link.click();
+            })
+            .catch(err => {
+                cleanup();
+                alert("Erreur lors de la génération de l'image. Veuillez réessayer.");
+                console.error(err);
+            });
+    }
+};
+
+// Initialisation
+window.onload = () => app.init();
