@@ -211,6 +211,11 @@
                     app.syncFooterLayout();
                 });
 
+                if (window.visualViewport) {
+                    window.visualViewport.addEventListener('resize', () => this.syncFooterLayout());
+                    window.visualViewport.addEventListener('scroll', () => this.syncFooterLayout());
+                }
+
                 // Observe les changements de visibilité de la bottom nav pour garder le footer visible
                 const nav = document.getElementById('bottom-nav');
                 new MutationObserver(() => this.syncFooterLayout()).observe(nav, {
@@ -431,6 +436,15 @@
                 const bottomNav = document.getElementById('bottom-nav');
                 if (!footer || !bottomNav) return;
 
+                const cssSafeAreaBottom = parseFloat(
+                    getComputedStyle(document.documentElement).getPropertyValue('--safe-area-bottom')
+                ) || 0;
+                const vv = window.visualViewport;
+                const visualViewportInsetBottom = vv
+                    ? Math.max(0, window.innerHeight - (vv.height + vv.offsetTop))
+                    : 0;
+                const safeAreaBottom = Math.max(cssSafeAreaBottom, visualViewportInsetBottom);
+
                 const navVisible = !bottomNav.classList.contains('hidden');
                 const footerHeight = footer.offsetHeight || 46;
                 const navHeight = navVisible ? (bottomNav.offsetHeight || 64) : 0;
@@ -439,18 +453,18 @@
                 footer.style.position = 'absolute';
                 footer.style.left = '0';
                 footer.style.right = '0';
-                footer.style.bottom = '0';
+                footer.style.bottom = `${safeAreaBottom}px`;
                 footer.style.zIndex = '30';
 
                 // Navigation d'actions juste au-dessus du footer
                 bottomNav.style.position = 'absolute';
                 bottomNav.style.left = '0';
                 bottomNav.style.right = '0';
-                bottomNav.style.bottom = `${footerHeight}px`;
+                bottomNav.style.bottom = `${footerHeight + safeAreaBottom}px`;
                 bottomNav.style.zIndex = '40';
 
                 // Laisse de l'espace en bas des vues pour que le contenu reste lisible en scroll
-                const bottomSpace = footerHeight + navHeight + 10;
+                const bottomSpace = footerHeight + navHeight + safeAreaBottom + 10;
                 ['view-login', 'view-dashboard', 'view-game', 'view-result'].forEach(id => {
                     const view = document.getElementById(id);
                     if (view) view.style.paddingBottom = `${bottomSpace}px`;

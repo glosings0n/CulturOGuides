@@ -1,3 +1,7 @@
+:root {
+            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
 body {
             background-color: #3e2723; /* Couleur bois sombre (Dark wooden color) au lieu du cyan */
             background-image: url('https://www.transparenttextures.com/patterns/wood-pattern.png'); /* Texture experte de bois */
