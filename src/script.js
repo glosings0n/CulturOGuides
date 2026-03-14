@@ -1188,5 +1188,17 @@ const app = {
     }
 };
 
-// Initialisation
-window.onload = () => app.init();
+// Initialisation robuste: DOMContentLoaded d'abord (rapide), load en secours.
+let appInitialized = false;
+function bootApp() {
+    if (appInitialized) return;
+    appInitialized = true;
+    app.init();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootApp, { once: true });
+    window.addEventListener('load', bootApp, { once: true });
+} else {
+    bootApp();
+}
