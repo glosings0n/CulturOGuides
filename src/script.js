@@ -170,6 +170,7 @@ const app = {
     leaderboardData: [], // Stocke les données du leaderboard pour le téléchargement
     preparingTextInterval: null,
     preparingStartedAt: 0,
+    isStartingGame: false,
     init() {
         this.renderCountryGrid();
         this.checkSession(); // Vérification de la session au démarrage
@@ -315,6 +316,18 @@ const app = {
             line1.textContent = `Nous préparons vos 10 questions${dots[idx]}`;
             idx = (idx + 1) % dots.length;
         }, 350);
+    },
+
+    setCategoryButtonsLoading(isLoading) {
+        const buttons = document.querySelectorAll('#view-dashboard button[onclick^="app.startGame"]');
+        buttons.forEach(button => {
+            button.disabled = isLoading;
+            if (isLoading) {
+                button.classList.add('opacity-70', 'pointer-events-none');
+            } else {
+                button.classList.remove('opacity-70', 'pointer-events-none');
+            }
+        });
     },
 
     async hidePreparingModal() {
@@ -642,76 +655,84 @@ const app = {
     },
 
     async startGame(category) {
+        if (this.isStartingGame) return;
+        this.isStartingGame = true;
+        this.setCategoryButtonsLoading(true);
+
         initAudio(); // Initialize audio context on first user interaction (game start)
         this.showPreparingModal(category);
-
-        // --- VÉRIFICATION DE LA LIMITE DE TENTATIVES (CACHE) ---
-        const session = this.getValidSession();
-        if (!session) {
-            // Sécurité : S'il n'y a plus de cache du tout, on renvoie au login
-            await this.hidePreparingModal();
-            this.switchView('view-login');
-            return;
-        }
-
-        // Si le joueur a déjà atteint le quota local dans la fenêtre de 1h, on le bloque
-        if (session.attempts >= MAX_ATTEMPTS_PER_SESSION) {
-            this.setLimitModalMessage(
-                'Vous avez déjà atteint la limite de <span class="text-glg-red text-lg">2 tentatives</span> autorisées.<br><br>Veuillez revenir dans 1 heure pour retenter votre chance !'
-            );
-            await this.hidePreparingModal();
-            document.getElementById('modal-limit').classList.remove('hidden');
-            lucide.createIcons(); // Assure l'affichage de l'icône timer-off
-            return; // Stoppe le lancement du jeu
-        }
-
         try {
-            const serverAttempt = await this.reserveAttemptOnServer(appState.user.username);
+            // --- VÉRIFICATION DE LA LIMITE DE TENTATIVES (CACHE) ---
+            const session = this.getValidSession();
+            if (!session) {
+                // Sécurité : S'il n'y a plus de cache du tout, on renvoie au login
+                await this.hidePreparingModal();
+                this.switchView('view-login');
+                return;
+            }
 
-            if (!serverAttempt.allowed) {
-                session.attempts = MAX_ATTEMPTS_PER_SESSION;
-                this.saveSession(session);
+            // Si le joueur a déjà atteint le quota local dans la fenêtre de 1h, on le bloque
+            if (session.attempts >= MAX_ATTEMPTS_PER_SESSION) {
                 this.setLimitModalMessage(
-                    'Le serveur confirme que ce pseudo a déjà utilisé ses <span class="text-glg-red text-lg">2 tentatives</span> sur la fenêtre en cours.<br><br>Veuillez patienter avant de rejouer.',
-                    'Quota Serveur Atteint'
+                    'Vous avez déjà atteint la limite de <span class="text-glg-red text-lg">2 tentatives</span> autorisées.<br><br>Veuillez revenir dans 1 heure pour retenter votre chance !'
+                );
+                await this.hidePreparingModal();
+                document.getElementById('modal-limit').classList.remove('hidden');
+                lucide.createIcons(); // Assure l'affichage de l'icône timer-off
+                return; // Stoppe le lancement du jeu
+            }
+
+            try {
+                const serverAttempt = await this.reserveAttemptOnServer(appState.user.username);
+
+                if (!serverAttempt.allowed) {
+                    session.attempts = MAX_ATTEMPTS_PER_SESSION;
+                    this.saveSession(session);
+                    this.setLimitModalMessage(
+                        'Le serveur confirme que ce pseudo a déjà utilisé ses <span class="text-glg-red text-lg">2 tentatives</span> sur la fenêtre en cours.<br><br>Veuillez patienter avant de rejouer.',
+                        'Quota Serveur Atteint'
+                    );
+                    await this.hidePreparingModal();
+                    document.getElementById('modal-limit').classList.remove('hidden');
+                    lucide.createIcons();
+                    return;
+                }
+
+                session.attempts = Number.isInteger(serverAttempt.attemptsUsed)
+                    ? serverAttempt.attemptsUsed
+                    : session.attempts + 1;
+                this.saveSession(session);
+            } catch (err) {
+                console.error('Validation serveur impossible :', err);
+                this.setLimitModalMessage(
+                    'Le contrôle serveur des tentatives est momentanément indisponible.<br><br>Réessayez dans quelques secondes pour éviter un démarrage non synchronisé.',
+                    'Validation Indisponible'
                 );
                 await this.hidePreparingModal();
                 document.getElementById('modal-limit').classList.remove('hidden');
                 lucide.createIcons();
                 return;
             }
+            // -------------------------------------------------------
 
-            session.attempts = Number.isInteger(serverAttempt.attemptsUsed)
-                ? serverAttempt.attemptsUsed
-                : session.attempts + 1;
-            this.saveSession(session);
-        } catch (err) {
-            console.error('Validation serveur impossible :', err);
-            this.setLimitModalMessage(
-                'Le contrôle serveur des tentatives est momentanément indisponible.<br><br>Réessayez dans quelques secondes pour éviter un démarrage non synchronisé.',
-                'Validation Indisponible'
-            );
+            // Préparation des questions
+            appState.currentQuestions = [...QUESTIONS[category]].sort(() => Math.random() - 0.5);
+            appState.qIndex = 0;
+            appState.score = 0;
+            appState.timeLeft = 90;
+
+            document.getElementById('game-score').textContent = "0";
+
             await this.hidePreparingModal();
-            document.getElementById('modal-limit').classList.remove('hidden');
-            lucide.createIcons();
-            return;
+            this.switchView('view-game');
+            document.getElementById('bottom-nav').classList.add('hidden'); // Cacher la nav en jeu
+
+            this.renderQuestion();
+            this.startTimer();
+        } finally {
+            this.isStartingGame = false;
+            this.setCategoryButtonsLoading(false);
         }
-        // -------------------------------------------------------
-
-        // Préparation des questions
-        appState.currentQuestions = [...QUESTIONS[category]].sort(() => Math.random() - 0.5);
-        appState.qIndex = 0;
-        appState.score = 0;
-        appState.timeLeft = 90;
-
-        document.getElementById('game-score').textContent = "0";
-
-        await this.hidePreparingModal();
-        this.switchView('view-game');
-        document.getElementById('bottom-nav').classList.add('hidden'); // Cacher la nav en jeu
-
-        this.renderQuestion();
-        this.startTimer();
     },
 
     startTimer() {

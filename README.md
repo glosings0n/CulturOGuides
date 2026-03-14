@@ -97,6 +97,16 @@ Ce projet repose sur une architecture serverless légère, utilisant des technol
 	- `doGet(action=attempt)`: réserve une tentative côté serveur avec fenêtre de 1h.
 	- `doGet(action=upsert)` ou `doPost()`: crée ou met à jour le joueur et son score.
 
+## Règle des Tentatives (1 Heure)
+
+- Chaque pseudo dispose de **2 tentatives maximum** sur une **fenêtre glissante de 1 heure**.
+- La fenêtre démarre au **moment de la première tentative** validée.
+- Exemple: si la première tentative est lancée à 14:10, les 2 tentatives sont comptées jusqu'à 15:10.
+- À partir de 15:10, le compteur repart à zéro automatiquement.
+- Le contrôle est fait à deux niveaux:
+	- côté navigateur (cache local) pour fluidifier l'expérience,
+	- côté serveur Apps Script (source d'autorité) pour empêcher les contournements simples.
+
 ## Architecture du Projet
 
 La structure est organisée pour une lecture rapide, avec séparation claire frontend / assets / config:
