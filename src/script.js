@@ -199,15 +199,7 @@ const app = {
         // ------------------------------
 
         // Gestion de la sélection de pays
-        document.querySelectorAll('.country-card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                document.querySelectorAll('.country-card').forEach(c => c.classList.remove('selected'));
-                e.currentTarget.classList.add('selected');
-                appState.user.countryName = e.currentTarget.dataset.name;
-                appState.user.countryFlag = e.currentTarget.dataset.flag;
-                document.getElementById('login-error').classList.add('hidden'); // Cacher l'erreur si on sélectionne
-            });
-        });
+        this.bindCountryCardEvents();
         // Initialisation des icônes Lucide
         lucide.createIcons();
         // Recalcul du scale de la carte au redimensionnement
@@ -231,17 +223,39 @@ const app = {
         });
 
         this.syncFooterLayout();
+
+        // Filet de sécurité: si une extension/adblock a vidé la grille, on la reconstruit.
+        setTimeout(() => {
+            const grid = document.getElementById('country-grid');
+            if (grid && grid.children.length === 0) {
+                this.renderCountryGrid();
+                this.bindCountryCardEvents();
+            }
+        }, 120);
     },
 
     renderCountryGrid() {
         const grid = document.getElementById('country-grid');
         grid.innerHTML = COUNTRIES.map(c => `
-                    <!-- Ajustement strict à 10.5% sur LG pour garantir 8 éléments par ligne avec les gaps -->
-                    <div class="country-card p-2 flex flex-col items-center justify-center text-center w-[23%] md:w-[14%] lg:w-[10.5%]" data-name="${c.name}" data-flag="https://flagcdn.com/w40/${c.id}.png">
-                        <img src="https://flagcdn.com/w40/${c.id}.png" alt="${c.name}" class="w-8 md:w-10 lg:w-12 h-auto mb-1 rounded-sm shadow-sm object-cover border border-gray-200">
-                        <span class="text-[9px] md:text-[11px] font-bold uppercase truncate w-full leading-tight text-wood-dark">${c.name}</span>
+                    <div class="country-card" data-name="${c.name}" data-flag="https://flagcdn.com/w80/${c.id}.png">
+                        <img src="https://flagcdn.com/w80/${c.id}.png" class="country-flag" alt="${c.name}">
+                        <span class="country-name">${c.name}</span>
                     </div>
                 `).join('');
+    },
+
+    bindCountryCardEvents() {
+        document.querySelectorAll('.country-card').forEach(card => {
+            if (card.dataset.bound === '1') return;
+            card.dataset.bound = '1';
+            card.addEventListener('click', (e) => {
+                document.querySelectorAll('.country-card').forEach(c => c.classList.remove('selected'));
+                e.currentTarget.classList.add('selected');
+                appState.user.countryName = e.currentTarget.dataset.name;
+                appState.user.countryFlag = e.currentTarget.dataset.flag;
+                document.getElementById('login-error').classList.add('hidden'); // Cacher l'erreur si on sélectionne
+            });
+        });
     },
 
     isBackendConfigured() {
@@ -595,9 +609,19 @@ const app = {
 
     switchView(viewId) {
         ['view-login', 'view-dashboard', 'view-game', 'view-result'].forEach(v => {
-            document.getElementById(v).classList.add('hidden');
+            const el = document.getElementById(v);
+            if (el) el.classList.add('hidden');
         });
-        document.getElementById(viewId).classList.remove('hidden');
+        const targetView = document.getElementById(viewId);
+        if (targetView) targetView.classList.remove('hidden');
+
+        if (viewId === 'view-login') {
+            document.body.style.display = 'flex';
+            document.body.style.alignItems = 'center';
+            document.body.style.justifyContent = 'center';
+        } else {
+            document.body.style.display = 'block';
+        }
         this.syncFooterLayout();
     },
 

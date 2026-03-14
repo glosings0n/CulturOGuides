@@ -74,32 +74,106 @@
 
     <!-- APP CONTAINER -->
     <!-- Augmentation de la largeur max sur grands écrans (max-w-5xl) pour que les 8 drapeaux respirent -->
-    <div id="app" class="relative w-full max-w-md md:max-w-3xl lg:max-w-5xl h-[100dvh] sm:h-[95vh] sm:rounded-3xl sm:border-8 border-wood-dark shadow-2xl bg-wood-bg overflow-hidden flex flex-col mx-auto">
+    <!-- APP CONTAINER -->
+    <div id="app" class="relative w-full min-h-screen flex items-center justify-center p-4">
         
         <!-- ================= ECRAN 1 : LOGIN ================= -->
-        <div id="view-login" class="flex-1 flex flex-col px-2 py-4 md:p-6 lg:p-8 overflow-y-auto fade-in h-full min-h-0">
-            <div class="text-center mt-2 mb-4">
-                <img src="assets/logo.png" alt="Logo Cultur'O'Guides" class="app-logo app-logo-lg mx-auto mb-2">
-                <h1 class="text-5xl title-text text-glg-yellow">Cultur'O'<br>Guides</h1>
-                <p class="text-wood-dark font-bold mt-2 text-lg">Célébrons la Francophonie !</p>
+        <div id="view-login" class="main-card fade-in">
+            <!-- Header Section -->
+            <div class="text-center mb-6">
+                <img src="assets/logo.png" alt="Logo Cultur'O'Guides" class="app-logo-lg mx-auto mb-4 border-4 border-wood-dark shadow-xl">
+                <h1 class="text-5xl md:text-6xl title-text">CULTUR'O'<br>GUIDES</h1>
+                <p class="subtitle-text">Célébrons la Francophonie !</p>
             </div>
 
-            <!-- Espace VERT augmenté drastiquement avec px-14 et px-20 sur grands écrans -->
-            <div class="wood-panel login-panel px-6 md:px-14 lg:px-20 py-8 mt-2 flex-1 flex flex-col items-center min-h-0">
-                <label class="block text-center font-bold mb-3 text-xl w-full">Ton Pseudo Connect</label>
-                <input type="text" id="input-username" class="input-wood w-full max-w-md p-3 text-center text-lg font-bold mb-8" placeholder="connectPseudo">
+            <!-- Login Form Container (Stitched Brown) -->
+            <div class="stitched-container flex flex-col items-center">
+                <label class="block text-center font-bold mb-4 text-xl md:text-2xl text-white">Ton Pseudo Connect</label>
+                <input type="text" id="input-username" class="input-premium mb-8 uppercase" placeholder="connectPseudo">
 
-                <label class="block text-center font-bold mb-3 text-xl w-full">Ton Pays</label>
-                <div id="country-grid" class="flex flex-wrap justify-center content-start gap-2 md:gap-3 lg:gap-4 mb-4 flex-1 w-full overflow-y-auto px-1">
-                    <!-- Généré en JS -->
+                <label class="block text-center font-bold mb-4 text-xl md:text-2xl text-white">Ton Pays</label>
+                <div id="country-grid" class="country-grid">
+                    <!-- Cards will be populated here? Or I keep the static ones? Mockup shows 16 flags. -->
+                    <!-- The mockup search suggests I should probably keep the dynamic population or the static fallback. -->
+                    <!-- I'll keep the static fallback but styled correctly. -->
+                    <div class="country-card" data-name="Algérie" data-flag="https://flagcdn.com/w80/dz.png">
+                        <img src="https://flagcdn.com/w80/dz.png" class="country-flag" alt="Algérie">
+                        <span class="country-name">Algérie</span>
+                    </div>
+                    <div class="country-card" data-name="Bénin" data-flag="https://flagcdn.com/w80/bj.png">
+                        <img src="https://flagcdn.com/w80/bj.png" class="country-flag" alt="Bénin">
+                        <span class="country-name">Bénin</span>
+                    </div>
+                    <div class="country-card" data-name="Brésil" data-flag="https://flagcdn.com/w80/br.png">
+                        <img src="https://flagcdn.com/w80/br.png" class="country-flag" alt="Brésil">
+                        <span class="country-name">Brésil</span>
+                    </div>
+                    <div class="country-card" data-name="Burkina" data-flag="https://flagcdn.com/w80/bf.png">
+                        <img src="https://flagcdn.com/w80/bf.png" class="country-flag" alt="Burkina">
+                        <span class="country-name">Burkina</span>
+                    </div>
+                    <div class="country-card" data-name="Burundi" data-flag="https://flagcdn.com/w80/bi.png">
+                        <img src="https://flagcdn.com/w80/bi.png" class="country-flag" alt="Burundi">
+                        <span class="country-name">Burundi</span>
+                    </div>
+                    <div class="country-card" data-name="Canada" data-flag="https://flagcdn.com/w80/ca.png">
+                        <img src="https://flagcdn.com/w80/ca.png" class="country-flag" alt="Canada">
+                        <span class="country-name">Canada</span>
+                    </div>
+                    <div class="country-card" data-name="Côte d'Ivoire" data-flag="https://flagcdn.com/w80/ci.png">
+                        <img src="https://flagcdn.com/w80/ci.png" class="country-flag" alt="Côte d'Ivoire">
+                        <span class="country-name">Côte d'I...</span>
+                    </div>
+                    <div class="country-card" data-name="France" data-flag="https://flagcdn.com/w80/fr.png">
+                        <img src="https://flagcdn.com/w80/fr.png" class="country-flag" alt="France">
+                        <span class="country-name">France</span>
+                    </div>
+                    <div class="country-card" data-name="Guinée" data-flag="https://flagcdn.com/w80/gn.png">
+                        <img src="https://flagcdn.com/w80/gn.png" class="country-flag" alt="Guinée">
+                        <span class="country-name">Guinée</span>
+                    </div>
+                    <div class="country-card" data-name="Inde" data-flag="https://flagcdn.com/w80/in.png">
+                        <img src="https://flagcdn.com/w80/in.png" class="country-flag" alt="Inde">
+                        <span class="country-name">Inde</span>
+                    </div>
+                    <div class="country-card" data-name="Maroc" data-flag="https://flagcdn.com/w80/ma.png">
+                        <img src="https://flagcdn.com/w80/ma.png" class="country-flag" alt="Maroc">
+                        <span class="country-name">Maroc</span>
+                    </div>
+                    <div class="country-card" data-name="Mexique" data-flag="https://flagcdn.com/w80/mx.png">
+                        <img src="https://flagcdn.com/w80/mx.png" class="country-flag" alt="Mexique">
+                        <span class="country-name">Mexique</span>
+                    </div>
+                    <div class="country-card" data-name="Nigeria" data-flag="https://flagcdn.com/w80/ng.png">
+                        <img src="https://flagcdn.com/w80/ng.png" class="country-flag" alt="Nigeria">
+                        <span class="country-name">Nigeria</span>
+                    </div>
+                    <div class="country-card" data-name="RDC" data-flag="https://flagcdn.com/w80/cd.png">
+                        <img src="https://flagcdn.com/w80/cd.png" class="country-flag" alt="RDC">
+                        <span class="country-name">RDC</span>
+                    </div>
+                    <div class="country-card" data-name="Suisse" data-flag="https://flagcdn.com/w80/ch.png">
+                        <img src="https://flagcdn.com/w80/ch.png" class="country-flag" alt="Suisse">
+                        <span class="country-name">Suisse</span>
+                    </div>
+                    <div class="country-card" data-name="Togo" data-flag="https://flagcdn.com/w80/tg.png">
+                        <img src="https://flagcdn.com/w80/tg.png" class="country-flag" alt="Togo">
+                        <span class="country-name">Togo</span>
+                    </div>
                 </div>
 
-                <!-- Message d'erreur visuel et esthétique au lieu du popup natif -->
-                <div id="login-error" class="hidden text-red-700 font-bold text-center bg-red-100 border-2 border-red-500 p-2 rounded-lg mb-4 text-sm shadow-inner max-w-md w-full"></div>
+                <div id="login-error" class="hidden text-red-200 font-bold text-center bg-red-900/50 border-2 border-red-500 p-2 rounded-lg mb-4 text-sm w-full"></div>
 
-                <button id="btn-login" onclick="app.login()" class="wood-btn wood-btn-green w-full max-w-md py-4 text-xl mt-auto shrink-0 transition-all">JOUER</button>
+                <button id="btn-login" onclick="app.login()" class="wood-btn wood-btn-green w-full max-w-sm py-4 text-2xl mt-4 shadow-xl">JOUER</button>
+            </div>
+
+            <!-- Footer Inside Card -->
+            <div class="text-center mt-6">
+                <img src="assets/logo.png" alt="Logo" class="app-logo-xs mx-auto mb-1 rounded-full border border-wood-dark">
+                <p class="text-xs text-wood-dark font-bold">Jeu développé par <span class="underline">@glosings0n</span></p>
             </div>
         </div>
+
 
         <!-- ================= ECRAN 2 : DASHBOARD ================= -->
         <div id="view-dashboard" class="hidden flex-1 flex flex-col px-2 py-4 sm:p-4 overflow-y-auto fade-in h-full min-h-0 bg-wood-bg">
