@@ -56,18 +56,18 @@
             ],
             lieux: [
                 // FACILES
-                { q: "Où se trouve la célèbre Tour Eiffel ?", options: ["Canada", "Suisse", "France", "Belgique"], a: "France" },
-                { q: "La statue du Christ Rédempteur domine la ville de Rio de Janeiro dans quel pays ?", options: ["Mexique", "Brésil", "Argentine", "Pérou"], a: "Brésil" },
-                { q: "Dans quel pays peut-on visiter le magnifique Taj Mahal ?", options: ["Inde", "Pakistan", "Thaïlande", "Chine"], a: "Inde" },
-                { q: "Les célèbres chutes du Niagara se trouvent à la frontière entre les États-Unis et le...", options: ["Mexique", "Canada", "Brésil", "Russie"], a: "Canada" },
-                { q: "Chichén Itzá, une des nouvelles merveilles du monde, se situe au...", options: ["Guatemala", "Brésil", "Mexique", "Honduras"], a: "Mexique" },
+                { q: "Chichén Itzá, cité préhispanique Maya classée par l'UNESCO et élue Nouvelle Merveille du Monde, se situe dans quel pays ?", options: ["Guatemala", "Brésil", "Nigeria", "Mexique"], a: "Mexique" },
+                { q: "Ce quartier historique aux rues pavées et édifices des XVIIe–XIXe siècles, longeant un grand fleuve, est le cœur fondateur de la plus grande métropole francophone des Amériques. Dans quel pays se trouve-t-il ?", options: ["France", "Maroc", "Canada", "Suisse"], a: "Canada" },
+                { q: "Le Lac Tanganyika, l'un des lacs les plus profonds du monde, est bordé de plages paisibles comme Saga Plage où l'on peut se baigner, naviguer en bateau et observer des hippopotames. Dans quel petit pays enclavé d'Afrique centrale ce lac constitue-t-il une attraction majeure ?", options: ["Togo", "RDC", "Burundi", "Guinée"], a: "Burundi" },
+                { q: "Les Saintes-Maries-de-la-Mer, commune côtière populaire pour ses plages et ses balades à vélo, se situe dans le sud de quel pays ?", options: ["Algérie", "Maroc", "Canada", "France"], a: "France" },
+                { q: "Le Parc National des Virunga, le plus ancien d'Afrique, célèbre pour ses gorilles de montagne et le volcan Nyiragongo, se trouve en...", options: ["Kenya", "Togo", "Burundi", "RDC"], a: "RDC" },
                 // MOYENNES
-                { q: "Où se trouve la Basilique Notre-Dame de la Paix, l'une des plus grandes au monde ?", options: ["France", "Côte d'Ivoire", "Bénin", "RDC"], a: "Côte d'Ivoire" },
-                { q: "Le Mont Cervin (Matterhorn), célèbre sommet des Alpes, se trouve principalement en...", options: ["France", "Suisse", "Italie", "Autriche"], a: "Suisse" },
-                { q: "Dans quel pays peut-on se promener sur la place Jemaa el-Fna ?", options: ["Algérie", "Tunisie", "Maroc", "Égypte"], a: "Maroc" },
-                { q: "Le volcan Nyiragongo, célèbre pour son lac de lave, se situe à l'est de...", options: ["Kenya", "RDC", "Burundi", "Tanzanie"], a: "RDC" },
+                { q: "Ce grand pont suspendu à près de 200 mètres de hauteur, niché dans les montagnes alpines, offre une vue imprenable et du saut à l'élastique pour les plus courageux. Dans quel pays d'Europe centrale se trouve-t-il ?", options: ["France", "Belgique", "Canada", "Suisse"], a: "Suisse" },
+                { q: "La Cascade de Kpimé, belle chute d'eau naturelle proche de Kpalimé, se trouve dans quel pays d'Afrique de l'Ouest ?", options: ["Bénin", "Burkina", "Guinée", "Togo"], a: "Togo" },
+                { q: "Le musée de Benin City, conservant l'héritage d'un ancien royaume africain avec son palais royal et ses traditions, se trouve dans quel pays ?", options: ["Bénin", "RDC", "Côte d'Ivoire", "Nigeria"], a: "Nigeria" },
+                { q: "Le Fouta-Djalon, région montagneuse aux cascades spectaculaires comme la Chute de la Dame du Mali, est situé dans quel pays ?", options: ["Mali", "Côte d'Ivoire", "Maroc", "Guinée"], a: "Guinée" },
                 // DIFFICILE
-                { q: "Les ruines de Loropéni, forteresse millénaire classée par l'UNESCO, se trouvent au...", options: ["Togo", "Bénin", "Mali", "Burkina"], a: "Burkina" }
+                { q: "La Huasteca Potosina, région naturelle aux cascades turquoise, à la grotte Sótano de las Golondrinas et aux jungles explorables en bateau, est une destination d'écotourisme de rêve. Dans quel pays d'Amérique latine se trouve-t-elle ?", options: ["Colombie", "Brésil", "Guatemala", "Mexique"], a: "Mexique" }
             ],
             mots: [
                 // FACILES
